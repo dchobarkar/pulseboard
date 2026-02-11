@@ -10,6 +10,26 @@
   --grid-line: rgba(63, 63, 70, 0.2);
 }
 
+:root.light {
+  --background: #f8f9fa;
+  --foreground: #1f2937;
+  --card: rgba(255, 255, 255, 0.95);
+  --card-border: rgba(209, 213, 219, 0.6);
+  --accent: #6366f1;
+  --accent-muted: rgba(99, 102, 241, 0.08);
+  --grid-line: rgba(209, 213, 219, 0.2);
+}
+
+:root.dark {
+  --background: #0c0c0f;
+  --foreground: #e4e4e7;
+  --card: rgba(24, 24, 28, 0.7);
+  --card-border: rgba(63, 63, 70, 0.5);
+  --accent: #6366f1;
+  --accent-muted: rgba(99, 102, 241, 0.15);
+  --grid-line: rgba(63, 63, 70, 0.2);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -37,6 +57,11 @@ body {
   border: 1px solid var(--card-border);
   border-radius: 12px;
   backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+:root.light .glass-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Subtle transitions for motion (no framer-motion) */
@@ -59,4 +84,129 @@ body {
 /* Sidebar collapse transition */
 .sidebar-transition {
   transition: width 0.25s ease, min-width 0.25s ease;
+}
+
+/* Light theme component overrides */
+:root.light .text-zinc-400 {
+  color: #6b7280;
+}
+
+:root.light .text-zinc-300 {
+  color: #4b5563;
+}
+
+:root.light .text-zinc-200 {
+  color: #374151;
+}
+
+:root.light .text-white {
+  color: #1f2937;
+}
+
+:root.light .bg-zinc-950 {
+  background-color: #ffffff;
+}
+
+:root.light .bg-zinc-900 {
+  background-color: #f9fafb;
+}
+
+:root.light .bg-zinc-800 {
+  background-color: #e5e7eb;
+}
+
+:root.light .border-zinc-800 {
+  border-color: #e5e7eb;
+}
+
+:root.light .border-zinc-700 {
+  border-color: #d1d5db;
+}
+
+:root.light .hover\:bg-white\/5:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+:root.light .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+:root.light .text-emerald-400 {
+  color: #059669;
+}
+
+:root.light .text-rose-400 {
+  color: #dc2626;
+}
+
+:root.light .bg-indigo-500\/20 {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+:root.light .text-indigo-300 {
+  color: #4f46e5;
+}
+
+:root.light .bg-zinc-950\/50 {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+:root.light .bg-zinc-950\/80 {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+:root.light .placeholder-zinc-500::placeholder {
+  color: #9ca3af;
+}
+
+:root.light .text-zinc-500 {
+  color: #6b7280;
+}
+
+:root.light .border-zinc-700\/60 {
+  border-color: rgba(209, 213, 219, 0.6);
+}
+
+:root.light .border-zinc-800\/60 {
+  border-color: rgba(229, 231, 235, 0.6);
+}
+
+:root.light .hover\:bg-white\/3:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+:root.light .bg-indigo-500\/30 {
+  background-color: rgba(99, 102, 241, 0.15);
+}
+
+:root.light .ring-indigo-500\/30 {
+  --tw-ring-color: rgba(99, 102, 241, 0.15);
+}
+
+:root.light .text-indigo-300 {
+  color: #6366f1;
+}
+
+:root.light .bg-zinc-900\/95 {
+  background-color: rgba(255, 255, 255, 0.98);
+}
+
+:root.light .hover\:text-white:hover {
+  color: #1f2937;
+}
+
+/* Ensure main content text is readable in light mode */
+:root.light main {
+  color: #1f2937;
+}
+
+:root.light main h1,
+:root.light main h2,
+:root.light main h3 {
+  color: #111827;
+}
+
+/* Better contrast for borders in light mode */
+:root.light .border-zinc-800\/60 {
+  border-color: rgba(209, 213, 219, 0.8);
 }

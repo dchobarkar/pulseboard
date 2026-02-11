@@ -2,11 +2,26 @@
 
 import { Search, Bell, Sun, Moon, User } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function Navbar() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+      return saved || "dark";
+    }
+    return "dark";
+  });
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", theme);
+    }
+  }, [theme]);
 
   const userMenuItems = [
     { label: "Profile", onClick: () => {} },
