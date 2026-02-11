@@ -1,9 +1,11 @@
 "use client";
 
-import { Search, Bell, Sun, Moon, User, Menu } from "lucide-react";
+import { Search, Sun, Moon, User, Menu } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
+import { NotificationsDropdown } from "@/components/ui/NotificationsDropdown";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { initialNotifications, type Notification } from "@/data/dashboard";
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -19,6 +21,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
     return "dark";
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -33,6 +36,14 @@ export function Navbar({ onMenuClick }: NavbarProps) {
     router.push("/logout");
   };
 
+  const handleDismissNotification = (id: string) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  };
+
+  const handleMarkAllRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  };
+
   const userMenuItems = [
     { label: "Profile", href: "/profile" },
     { label: "Preferences", href: "/settings?tab=preferences" },
@@ -40,7 +51,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   ];
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-zinc-800/60 bg-zinc-950/50 px-3 backdrop-blur sm:gap-4 sm:px-4 md:px-6">
+    <header className="relative z-30 flex h-14 shrink-0 items-center justify-between gap-2 border-b border-zinc-800/60 bg-zinc-950/50 px-3 backdrop-blur sm:gap-4 sm:px-4 md:px-6">
       <div className="flex flex-1 items-center gap-2 sm:gap-4">
         {/* Mobile menu button */}
         <button
@@ -64,13 +75,12 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-200"
-          aria-label="Notifications"
-        >
-          <Bell className="h-5 w-5" />
-        </button>
+        <NotificationsDropdown
+          notifications={notifications}
+          onDismiss={handleDismissNotification}
+          onMarkAllRead={handleMarkAllRead}
+          align="right"
+        />
         <button
           type="button"
           onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}

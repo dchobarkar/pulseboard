@@ -268,3 +268,64 @@ export const reportsData: Report[] = [
     status: "failed",
   },
 ];
+
+// Notifications
+export interface Notification {
+  id: string;
+  type: "success" | "warning" | "info" | "payment" | "user" | "report" | "growth";
+  title: string;
+  message: string;
+  time: string;
+  read?: boolean;
+}
+
+export const initialNotifications: Notification[] = [
+  {
+    id: "1",
+    type: "payment",
+    title: "Payment Received",
+    message: "Invoice INV-001 for $299 has been paid successfully",
+    time: "2m ago",
+    read: false,
+  },
+  {
+    id: "2",
+    type: "user",
+    title: "New User Signup",
+    message: "Sam Rivera has joined your workspace",
+    time: "15m ago",
+    read: false,
+  },
+  {
+    id: "3",
+    type: "growth",
+    title: "Revenue Milestone",
+    message: "Monthly revenue exceeded $48,000",
+    time: "1h ago",
+    read: false,
+  },
+  {
+    id: "4",
+    type: "report",
+    title: "Report Ready",
+    message: "Monthly Revenue Summary is ready for download",
+    time: "2h ago",
+    read: true,
+  },
+  {
+    id: "5",
+    type: "warning",
+    title: "Payment Overdue",
+    message: "Invoice INV-005 for $899 is overdue",
+    time: "3h ago",
+    read: false,
+  },
+  {
+    id: "6",
+    type: "success",
+    title: "System Update",
+    message: "Dashboard has been updated with new features",
+    time: "5h ago",
+    read: true,
+  },
+];
