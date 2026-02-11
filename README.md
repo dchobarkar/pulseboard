@@ -4,7 +4,7 @@ Production-grade SaaS analytics dashboard built to simulate real product environ
 
 PulseBoard is a system-level frontend engineering showcase designed to demonstrate dashboard architecture, data visualization, and SaaS interface development.
 
-This project is part of the GigDevOS capability lab — created to replace NDA-protected client dashboards with anonymized product demonstrations.
+This project is part of the GigDevOS capability lab. Created to replace NDA-protected client dashboards with anonymized product demonstrations.
 
 ---
 
@@ -101,25 +101,33 @@ It serves as a flagship demo for freelance and gig capability positioning.
 
 ## 🛠 Tech Stack
 
-Frontend
-Next.js (App Router)
-React
-TypeScript
-Tailwind CSS
+### Core
 
-Visualization
-Recharts
+- **Framework**: [Next.js 16.1.6](https://nextjs.org/) (App Router)
+- **UI Library**: [React 19.2.3](https://react.dev/)
+- **Language**: [TypeScript 5.0](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
 
-Animation
-Framer Motion
+### Visualization
 
-Icons
-Lucide React
+- **Charts**: [Recharts 3.7.0](https://recharts.org/)
+- **Export**: [html2canvas 1.4.1](https://html2canvas.hertzen.com/)
 
-Deployment
-Vercel
+### Icons & UI
 
----
+- **Icons**: [Lucide React](https://lucide.dev/)
+
+### Development
+
+- **Linting**: ESLint with Next.js config
+- **Package Manager**: pnpm
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js**: 18.x or higher
+- **pnpm**: 8.x or higher ([Install pnpm](https://pnpm.io/installation))
 
 ## 🎨 Design System
 
@@ -133,31 +141,7 @@ PulseBoard follows a modern SaaS interface language.
 • Grid overlays
 • Gradient accents
 
-Built to feel production-ready — not template-based.
-
----
-
-## 📂 Project Structure
-
-```structure
-/app
-  /dashboard
-  /analytics
-  /users
-  /billing
-  /reports
-  /settings
-
-/components
-  /layout
-  /ui
-  /charts
-
-/data
-/hooks
-/lib
-/styles
-```
+Built to feel production-ready, not template-based.
 
 ---
 
@@ -178,74 +162,147 @@ No lorem ipsum or placeholder analytics.
 
 ## 🚀 Getting Started
 
-Clone the repository:
+### Installation
 
-```bash
-git clone https://github.com/dchobarkar/pulseboard.git
+1. **Clone the repository**
 
-cd pulseboard
+   ```bash
+   git clone https://github.com/dchobarkar/pulseboard.git
+   cd pulseboard
+   ```
 
-pnpm install
+2. **Install dependencies**
 
-pnpm dev
-```
+   ```bash
+   pnpm install
+   ```
 
----
+3. **Start the development server**
 
-## 🏗 Build
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🏗 Building for Production
+
+### Build the application
 
 ```bash
 pnpm build
+```
+
+### Start the production server
+
+```bash
 pnpm start
 ```
 
----
+### Run linting
 
-## 🌐 Deployment
+```bash
+pnpm lint
+```
 
-Optimized for Vercel deployment.
+## 📂 Project Structure
 
-Steps:
+```structure
+pulseboard/
+├── app/                      # Next.js App Router pages
+│   ├── (dashboard)/         # Dashboard routes
+│   │   ├── analytics/       # Analytics page
+│   │   ├── billing/         # Billing page
+│   │   ├── reports/         # Reports page
+│   │   ├── settings/        # Settings page
+│   │   ├── users/           # Users management
+│   │   └── profile/         # User profile
+│   ├── logged-out/          # Logged out state
+│   └── logout/              # Logout flow
+├── components/              # React components
+│   ├── charts/              # Chart components
+│   ├── layout/              # Layout components
+│   └── ui/                  # Reusable UI components
+├── data/                    # Data layer
+│   ├── analytics.ts         # Analytics data
+│   ├── billing.ts           # Billing data
+│   ├── constants.ts         # App constants
+│   ├── navigation.ts        # Navigation config
+│   ├── overview.ts          # Overview data
+│   ├── reports.ts           # Reports data
+│   ├── settings.ts          # Settings data
+│   ├── types.ts             # TypeScript types
+│   └── users.ts             # User data
+├── hooks/                   # Custom React hooks
+│   └── useKeyboardShortcuts.ts
+├── lib/                     # Utility functions
+│   └── export.ts            # Export utilities
+├── LICENSE                  # MIT License
+└── README.md               # This file
+```
 
-1. Push repo to GitHub
-2. Import into Vercel
-3. Deploy instantly
+## ⌨️ Keyboard Shortcuts
 
----
+- **`/`** or **`⌘K`** / **`Ctrl+K`**: Focus search
+- **`G + U`**: Navigate to Users
+- **`G + A`**: Navigate to Analytics
+- **`G + B`**: Navigate to Billing
+- **`G + R`**: Navigate to Reports
+- **`G + S`**: Navigate to Settings
+- **`?`**: Show keyboard shortcuts help
 
-## ⚡ Performance Focus
+## 📊 Performance
 
-• Lazy-loaded charts
-• Optimized bundles
-• Component memoization
-• Lighthouse 85+ target
+- **Lighthouse Score**: Target 85+ across all metrics
+- **Code Splitting**: Automatic route-based code splitting
+- **Lazy Loading**: Charts loaded on demand
+- **Optimized Bundles**: Tree-shaking and minification
+- **Memoization**: React.memo and useMemo for performance optimization
 
----
+## 🔧 Configuration
 
-## 🔐 NDA Compliance
+### Environment Variables
 
-PulseBoard contains no client data or proprietary dashboards.
+Currently, no environment variables are required. The application uses mock data stored in the `data/` directory.
 
-All interfaces and datasets are anonymized and self-initiated.
+### TypeScript Configuration
 
----
+The project uses strict TypeScript configuration with path aliases:
+
+- `@/*` maps to the project root
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
-This project is part of a capability showcase but contributions and forks are welcome.
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
----
+### Contributing Guidelines
 
-## 🪪 License
-
-MIT License — free for personal and commercial adaptation.
-
----
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## ⭐ Support
 
-If you found this project helpful, consider starring the repository.
+If you found this project helpful, consider:
+
+- ⭐ Starring the repository
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 📖 Improving documentation
+
+## 🔗 Links
+
+- **Repository**: [GitHub](https://github.com/dchobarkar/pulseboard)
+- **Issues**: [GitHub Issues](https://github.com/dchobarkar/pulseboard/issues)
+- **License**: [MIT License](LICENSE)
 
 ---
 
-Built to simulate real SaaS product environments 🚀
+_PulseBoard is designed to simulate real-world SaaS product environments without exposing proprietary client data._
