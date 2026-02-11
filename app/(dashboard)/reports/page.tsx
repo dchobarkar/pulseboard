@@ -28,7 +28,12 @@ import {
 import { Modal } from "@/components/ui/Modal";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Badge } from "@/components/ui/Badge";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
+import { Button } from "@/components/ui/Button";
+import { Card, CardHeader } from "@/components/ui/Card";
+import { FormField, Input, Select, Textarea } from "@/components/ui/FormField";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 const statusConfig: Record<
@@ -410,28 +415,18 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex-1">
-          <Breadcrumbs />
-          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">
-            Reports
-          </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
-            Generate, schedule, and export operational reports
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={handleAddReport}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          Generate Report
-        </button>
-      </div>
+      <PageHeader
+        title="Reports"
+        description="Generate, schedule, and export operational reports"
+        actions={
+          <Button icon={Plus} onClick={handleAddReport}>
+            Generate Report
+          </Button>
+        }
+      />
 
       {/* Date Range with Presets */}
-      <div className="glass-card p-4">
+      <Card>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-zinc-400" />
@@ -481,7 +476,7 @@ export default function ReportsPage() {
             </div>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
@@ -534,7 +529,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Reports List */}
-      <div className="glass-card transition-fade-in divide-y divide-zinc-800/60">
+      <Card className="divide-y divide-zinc-800/60">
         {filtered.length === 0 ? (
           <EmptyState
             icon={FileText}
@@ -690,7 +685,7 @@ export default function ReportsPage() {
             );
           })
         )}
-      </div>
+      </Card>
 
       {/* Add/Generate Report Modal */}
       <Modal

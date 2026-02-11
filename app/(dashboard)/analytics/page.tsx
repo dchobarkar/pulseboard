@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import { useState, useMemo } from "react";
 import { RefreshCw, Clock, Download, FileDown } from "lucide-react";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { DateRangeFilter } from "@/components/ui/DateRangeFilter";
 import { exportToCSV } from "@/lib/export";
 import {
   revenueVsExpenses,
@@ -201,50 +202,21 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex-1">
-          <Breadcrumbs />
-          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Analytics</h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
-            Revenue, growth, funnel, and retention
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 text-xs text-zinc-500">
-            <Clock className="h-3 w-3" />
-            <span>Updated {lastUpdated.toLocaleTimeString()}</span>
-          </div>
-          <button
-            type="button"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="rounded-lg p-2 text-zinc-400 hover:bg-white/5 hover:text-zinc-200 transition-colors disabled:opacity-50"
-            title="Refresh data"
-          >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        title="Analytics"
+        description="Revenue, growth, funnel, and retention"
+        lastUpdated={lastUpdated}
+        isRefreshing={isRefreshing}
+        onRefresh={handleRefresh}
+      />
 
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex flex-wrap gap-2">
-          {dateRanges.map((range) => (
-            <button
-              key={range.value}
-              type="button"
-              onClick={() => setDateRange(range.value)}
-              className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
-                dateRange === range.value
-                  ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-300"
-                  : "border-zinc-700/60 text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
-              }`}
-            >
-              {range.label}
-            </button>
-          ))}
-        </div>
+        <DateRangeFilter
+          options={dateRanges}
+          selectedValue={dateRange}
+          onChange={setDateRange}
+        />
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"

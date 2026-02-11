@@ -8,7 +8,11 @@ import { Badge } from "@/components/ui/Badge";
 import { KpiCard } from "@/components/ui/KpiCard";
 import { Modal } from "@/components/ui/Modal";
 import { Dropdown } from "@/components/ui/Dropdown";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
+import { Button } from "@/components/ui/Button";
+import { Card, CardHeader } from "@/components/ui/Card";
 import {
   Plus,
   DollarSign,
@@ -161,25 +165,23 @@ export default function BillingPage() {
     );
   };
 
+  const statusOptions = [
+    { label: "Paid", value: "paid" },
+    { label: "Pending", value: "pending" },
+    { label: "Overdue", value: "overdue" },
+  ];
+
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex-1">
-          <Breadcrumbs />
-          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Billing</h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
-            MRR, plans, and invoices
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={handleAddInvoice}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          Add Invoice
-        </button>
-      </div>
+      <PageHeader
+        title="Billing"
+        description="MRR, plans, and invoices"
+        actions={
+          <Button icon={Plus} onClick={handleAddInvoice}>
+            Add Invoice
+          </Button>
+        }
+      />
 
       <KpiCard
         label={kpiOverview.mrr.label}
@@ -197,34 +199,28 @@ export default function BillingPage() {
         </ChartWrapper>
       </div>
 
-      <div className="glass-card transition-fade-in p-3 sm:p-5">
-        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h3 className="text-xs sm:text-sm font-medium text-zinc-300">Invoices</h3>
-          <div className="flex flex-wrap gap-2">
-            <div className="relative flex-1 sm:flex-initial sm:max-w-xs">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-              <input
-                type="search"
+      <Card padding="lg">
+        <CardHeader
+          title="Invoices"
+          actions={
+            <FilterBar>
+              <SearchBar
                 placeholder="Search invoices..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 py-2 pl-9 pr-4 text-sm text-zinc-200 placeholder-zinc-500 focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/30"
+                className="flex-1 sm:flex-initial sm:max-w-xs"
               />
-            </div>
-            <select
-              value={statusFilter}
-              onChange={(e) =>
-                setStatusFilter((e.target.value || "") as InvoiceStatus | "")
-              }
-              className="rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
-            >
-              <option value="">All statuses</option>
-              <option value="paid">Paid</option>
-              <option value="pending">Pending</option>
-              <option value="overdue">Overdue</option>
-            </select>
-          </div>
-        </div>
+              <FilterSelect
+                value={statusFilter}
+                onChange={(value) =>
+                  setStatusFilter((value || "") as InvoiceStatus | "")
+                }
+                options={statusOptions}
+                placeholder="All statuses"
+              />
+            </FilterBar>
+          }
+        />
         <Table<Invoice>
           columns={[
             { key: "id", label: "Invoice" },
@@ -308,7 +304,7 @@ export default function BillingPage() {
               : undefined,
           }}
         />
-      </div>
+      </Card>
 
       {/* Add Invoice Modal */}
       <Modal
