@@ -116,7 +116,7 @@ const BillingPage = () => {
 
     if (isAddModalOpen) {
       const newInvoice: Invoice = {
-        id: `INV-${String(invoices.length + 1).padStart(3, "0")}`,
+        id: `INV-${Date.now().toString().slice(-6)}`,
         date: formData.date,
         amount: Number(formData.amount),
         plan: formData.plan as typeof PLANS[number],

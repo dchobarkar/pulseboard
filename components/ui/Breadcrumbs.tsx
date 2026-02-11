@@ -33,8 +33,8 @@ const Breadcrumbs = () => {
       >
         <Home className="h-3 w-3 sm:h-4 sm:w-4" />
       </Link>
-      {breadcrumbs.slice(1).map((crumb, index) => (
-        <div key={index} className="flex items-center gap-1">
+      {breadcrumbs.slice(1).map((crumb) => (
+        <div key={crumb.href || crumb.label} className="flex items-center gap-1">
           <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           {crumb.href ? (
             <Link

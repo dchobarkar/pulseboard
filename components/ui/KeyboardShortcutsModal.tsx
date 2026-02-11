@@ -153,9 +153,9 @@ export function KeyboardShortcutsDropdown({
                 {category}
               </h3>
               <div className="space-y-1.5">
-                {items.map((shortcut, index) => (
-                  <div
-                    key={index}
+              {items.map((shortcut) => (
+                <div
+                  key={`${shortcut.category}-${shortcut.description}`}
                     className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 px-3 rounded-lg border border-zinc-700/60 bg-zinc-900/50 hover:bg-zinc-900/80 transition-colors"
                   >
                     <span className="text-xs sm:text-sm text-zinc-300 flex-shrink-0">{shortcut.description}</span>

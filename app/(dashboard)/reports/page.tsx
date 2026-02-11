@@ -292,7 +292,7 @@ export default function ReportsPage() {
 
     if (isAddModalOpen) {
       const newReport: Report = {
-        id: String(reports.length + 1),
+        id: `report-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         name: formData.name,
         type: formData.type,
         category: formData.category || undefined,

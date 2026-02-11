@@ -58,8 +58,8 @@ const OverviewPage = () => {
       if (saved) {
         try {
           setHiddenWidgets(new Set(JSON.parse(saved)));
-        } catch (e) {
-          console.error("Failed to load widget preferences:", e);
+        } catch {
+          // Silently fail - use default empty set
         }
       }
     }

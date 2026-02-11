@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { User, Building2, Bell, Shield, Settings as SettingsIcon, ExternalLink } from "lucide-react";
 import { Sun, Moon } from "lucide-react";
@@ -23,6 +23,7 @@ export function SettingsContent() {
   const [settings, setSettings] = useState<SettingsData>(DEFAULT_SETTINGS);
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const saveMessageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load settings from localStorage on mount
   useEffect(() => {
@@ -32,8 +33,8 @@ export function SettingsContent() {
         try {
           const parsed = JSON.parse(saved);
           setSettings((prev) => ({ ...prev, ...parsed }));
-        } catch (e) {
-          console.error("Failed to load settings:", e);
+        } catch {
+          // Silently fail - use default settings
         }
       }
       
@@ -107,9 +108,15 @@ export function SettingsContent() {
       // Save to localStorage
       if (typeof window !== "undefined") {
         const saved = localStorage.getItem(STORAGE_KEYS.APP_SETTINGS);
-        const existing = saved ? JSON.parse(saved) : {};
+        let existing = {};
+        try {
+          existing = saved ? JSON.parse(saved) : {};
+        } catch {
+          // If corrupted, start fresh
+          existing = {};
+        }
         localStorage.setItem(
-          "appSettings",
+          STORAGE_KEYS.APP_SETTINGS,
           JSON.stringify({
             ...existing,
             [section]: settings[section],
@@ -118,10 +125,10 @@ export function SettingsContent() {
       }
 
       setSaveMessage({ type: "success", text: "Settings saved successfully!" });
-      setTimeout(() => setSaveMessage(null), 3000);
-    } catch (error) {
+      saveMessageTimeoutRef.current = setTimeout(() => setSaveMessage(null), 3000);
+    } catch {
       setSaveMessage({ type: "error", text: "Failed to save settings" });
-      setTimeout(() => setSaveMessage(null), 3000);
+      saveMessageTimeoutRef.current = setTimeout(() => setSaveMessage(null), 3000);
     } finally {
       setIsSaving(false);
     }

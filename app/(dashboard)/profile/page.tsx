@@ -31,8 +31,8 @@ export default function ProfilePage() {
               organization: parsed.workspace.name || prev.organization,
             }));
           }
-        } catch (e) {
-          console.error("Failed to load profile:", e);
+        } catch {
+          // Silently fail - use default profile
         }
       }
     }

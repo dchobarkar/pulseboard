@@ -11,9 +11,11 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   useKeyboardShortcuts({
     onShowShortcuts: () => {
       // Trigger the shortcuts dropdown by simulating a click on the button
-      const shortcutsButton = document.querySelector('[aria-label="Keyboard shortcuts"]') as HTMLButtonElement;
-      if (shortcutsButton) {
-        shortcutsButton.click();
+      if (typeof window !== "undefined") {
+        const shortcutsButton = document.querySelector('[aria-label="Keyboard shortcuts"]') as HTMLButtonElement | null;
+        if (shortcutsButton) {
+          shortcutsButton.click();
+        }
       }
     },
   });

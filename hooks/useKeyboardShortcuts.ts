@@ -26,7 +26,7 @@ const useKeyboardShortcuts = (options?: UseKeyboardShortcutsOptions) => {
       // Cmd/Ctrl + K for search
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement;
+        const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement | null;
         if (searchInput) {
           searchInput.focus();
         }
@@ -88,7 +88,7 @@ const useKeyboardShortcuts = (options?: UseKeyboardShortcutsOptions) => {
       // / for search
       if (e.key === "/" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
-        const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement;
+        const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement | null;
         if (searchInput) {
           searchInput.focus();
         }

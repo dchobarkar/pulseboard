@@ -90,7 +90,7 @@ export default function UsersPage() {
 
     if (isAddModalOpen) {
       const newUser: User = {
-        id: String(users.length + 1),
+        id: `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         ...formData,
         createdAt: new Date().toISOString().split("T")[0],
       };
