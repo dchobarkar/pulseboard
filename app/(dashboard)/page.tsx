@@ -28,6 +28,11 @@ import {
   trafficSources,
   recentActivity,
   topProducts,
+  overviewDataToday,
+  overviewDataWeek,
+  overviewDataMonth,
+  overviewDataLastMonth,
+  overviewDataQuarter,
 } from "@/data/dashboard";
 
 const RevenueLineChart = dynamic(
@@ -93,17 +98,37 @@ export default function OverviewPage() {
     }
   };
 
+  // Get filtered data based on selected range
+  const getFilteredData = () => {
+    switch (selectedRange) {
+      case "today":
+        return overviewDataToday;
+      case "week":
+        return overviewDataWeek;
+      case "month":
+        return overviewDataMonth;
+      case "lastMonth":
+        return overviewDataLastMonth;
+      case "quarter":
+        return overviewDataQuarter;
+      default:
+        return overviewDataMonth;
+    }
+  };
+
+  const filteredData = getFilteredData();
+
   const handleExportRevenue = () => {
-    exportToCSV(revenueChartData, `revenue-${selectedRange}`);
+    exportToCSV(filteredData.revenueChart, `revenue-${selectedRange}`);
   };
 
   const handleExportTraffic = () => {
-    exportToCSV(trafficSources, `traffic-sources-${selectedRange}`);
+    exportToCSV(filteredData.trafficSources, `traffic-sources-${selectedRange}`);
   };
 
   const handleExportProducts = () => {
     exportTableToCSV(
-      topProducts,
+      filteredData.topProducts,
       [
         { key: "name", label: "Product" },
         { key: "revenue", label: "Revenue" },
@@ -115,36 +140,36 @@ export default function OverviewPage() {
 
   const kpis = [
     {
-      label: kpiOverview.revenue.label,
-      value: `$${kpiOverview.revenue.value.toLocaleString()}`,
-      change: kpiOverview.revenue.change,
+      label: filteredData.kpis.revenue.label,
+      value: `$${filteredData.kpis.revenue.value.toLocaleString()}`,
+      change: filteredData.kpis.revenue.change,
       icon: DollarSign,
-      goal: 50000,
-      goalLabel: "Monthly Goal",
-      tooltip: "Total revenue generated this month",
+      goal: selectedRange === "today" ? 2000 : selectedRange === "week" ? 15000 : selectedRange === "lastMonth" ? 45000 : 50000,
+      goalLabel: selectedRange === "today" ? "Daily Goal" : selectedRange === "week" ? "Weekly Goal" : "Monthly Goal",
+      tooltip: "Total revenue generated in the selected period",
     },
     {
-      label: kpiOverview.activeUsers.label,
-      value: kpiOverview.activeUsers.value.toLocaleString(),
-      change: kpiOverview.activeUsers.change,
+      label: filteredData.kpis.activeUsers.label,
+      value: filteredData.kpis.activeUsers.value.toLocaleString(),
+      change: filteredData.kpis.activeUsers.change,
       icon: Users,
-      goal: 15000,
+      goal: selectedRange === "today" ? 12500 : selectedRange === "week" ? 12500 : selectedRange === "lastMonth" ? 11000 : 15000,
       goalLabel: "Target",
       tooltip: "Number of active users in the current period",
     },
     {
-      label: kpiOverview.conversionRate.label,
-      value: `${kpiOverview.conversionRate.value}%`,
-      change: kpiOverview.conversionRate.change,
+      label: filteredData.kpis.conversionRate.label,
+      value: `${filteredData.kpis.conversionRate.value}%`,
+      change: filteredData.kpis.conversionRate.change,
       icon: Percent,
       goal: 5,
       goalLabel: "Target %",
       tooltip: "Percentage of visitors who convert to customers",
     },
     {
-      label: kpiOverview.monthlyGrowth.label,
-      value: `${kpiOverview.monthlyGrowth.value}%`,
-      change: kpiOverview.monthlyGrowth.change,
+      label: filteredData.kpis.monthlyGrowth.label,
+      value: `${filteredData.kpis.monthlyGrowth.value}%`,
+      change: filteredData.kpis.monthlyGrowth.change,
       icon: TrendingUp,
       tooltip: "Month-over-month growth percentage",
     },
@@ -278,7 +303,7 @@ export default function OverviewPage() {
               chartId="revenue-chart"
               onExportCSV={handleExportRevenue}
             >
-              <RevenueLineChart data={revenueChartData} />
+              <RevenueLineChart data={filteredData.revenueChart} />
             </ChartWrapper>
           </div>
         )}
@@ -299,7 +324,7 @@ export default function OverviewPage() {
               chartId="traffic-chart"
               onExportCSV={handleExportTraffic}
             >
-              <TrafficPieChart data={trafficSources} />
+              <TrafficPieChart data={filteredData.trafficSources} />
             </ChartWrapper>
           </div>
         )}
@@ -325,7 +350,7 @@ export default function OverviewPage() {
                 Recent activity
               </h3>
               <ul className="space-y-2 sm:space-y-3">
-                {recentActivity.map((a) => (
+                {filteredData.recentActivity.map((a) => (
                   <li
                     key={a.id}
                     className="flex items-center justify-between border-b border-zinc-800/60 pb-2 sm:pb-3 last:border-0 last:pb-0 group cursor-pointer hover:bg-white/5 rounded-lg px-2 -mx-2 transition-colors"
@@ -384,7 +409,7 @@ export default function OverviewPage() {
                   },
                   { key: "units", label: "Units" },
                 ]}
-                data={topProducts}
+                data={filteredData.topProducts}
                 keyExtractor={(r) => r.name}
               />
             </div>
