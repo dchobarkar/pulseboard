@@ -51,15 +51,15 @@ export default function OverviewPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Overview</h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="text-xl sm:text-2xl font-semibold text-white">Overview</h1>
+        <p className="mt-1 text-xs sm:text-sm text-zinc-400">
           Key metrics and performance at a glance
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {kpis.map((kpi) => (
           <KpiCard
             key={kpi.label}
@@ -71,7 +71,7 @@ export default function OverviewPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         <ChartWrapper title="Revenue">
           <RevenueLineChart data={revenueChartData} />
         </ChartWrapper>
@@ -80,29 +80,29 @@ export default function OverviewPage() {
         </ChartWrapper>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="glass-card transition-fade-in p-5">
-          <h3 className="mb-4 flex items-center gap-2 text-sm font-medium text-zinc-300">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
+        <div className="glass-card transition-fade-in p-3 sm:p-5">
+          <h3 className="mb-3 sm:mb-4 flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-300">
             <Activity className="h-4 w-4" />
             Recent activity
           </h3>
-          <ul className="space-y-3">
+          <ul className="space-y-2 sm:space-y-3">
             {recentActivity.map((a) => (
               <li
                 key={a.id}
-                className="flex items-center justify-between border-b border-zinc-800/60 pb-3 last:border-0 last:pb-0"
+                className="flex items-center justify-between border-b border-zinc-800/60 pb-2 sm:pb-3 last:border-0 last:pb-0"
               >
-                <div>
-                  <p className="text-sm text-zinc-200">{a.user}</p>
-                  <p className="text-xs text-zinc-500">{a.action}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-zinc-200 truncate">{a.user}</p>
+                  <p className="text-xs text-zinc-500 truncate">{a.action}</p>
                 </div>
-                <span className="text-xs text-zinc-500">{a.time}</span>
+                <span className="text-xs text-zinc-500 ml-2 shrink-0">{a.time}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="glass-card transition-fade-in p-5">
-          <h3 className="mb-4 text-sm font-medium text-zinc-300">
+        <div className="glass-card transition-fade-in p-3 sm:p-5">
+          <h3 className="mb-3 sm:mb-4 text-xs sm:text-sm font-medium text-zinc-300">
             Top products
           </h3>
           <Table

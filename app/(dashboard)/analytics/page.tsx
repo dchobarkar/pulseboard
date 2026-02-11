@@ -42,15 +42,15 @@ export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState<string>("30d");
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Analytics</h1>
-          <p className="mt-1 text-sm text-zinc-400">
+          <h1 className="text-xl sm:text-2xl font-semibold text-white">Analytics</h1>
+          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
             Revenue, growth, funnel, and retention
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {dateRanges.map((range) => (
             <button
               key={range.value}
@@ -68,7 +68,7 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         <ChartWrapper title="Revenue vs expenses">
           <RevenueVsExpensesChart data={revenueVsExpenses} />
         </ChartWrapper>
@@ -77,7 +77,7 @@ export default function AnalyticsPage() {
         </ChartWrapper>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         <ChartWrapper title="Conversion funnel">
           <FunnelChart data={funnelSteps} />
         </ChartWrapper>

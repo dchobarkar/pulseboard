@@ -18,15 +18,15 @@ export default function ReportsPage() {
   const [dateTo, setDateTo] = useState("2024-06-30");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Reports</h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="text-xl sm:text-2xl font-semibold text-white">Reports</h1>
+        <p className="mt-1 text-xs sm:text-sm text-zinc-400">
           Export and download operational reports
         </p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-4">
         <div className="flex items-center gap-2">
           <label htmlFor="date-from" className="text-sm text-zinc-400">
             From

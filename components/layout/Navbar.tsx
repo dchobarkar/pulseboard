@@ -1,10 +1,14 @@
 "use client";
 
-import { Search, Bell, Sun, Moon, User } from "lucide-react";
+import { Search, Bell, Sun, Moon, User, Menu } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useState, useEffect } from "react";
 
-export function Navbar() {
+interface NavbarProps {
+  onMenuClick?: () => void;
+}
+
+export function Navbar({ onMenuClick }: NavbarProps) {
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme") as "dark" | "light" | null;
@@ -30,9 +34,18 @@ export function Navbar() {
   ];
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-zinc-800/60 bg-zinc-950/50 px-4 backdrop-blur md:px-6">
-      <div className="flex flex-1 items-center gap-4">
-        <div className="relative w-full max-w-md">
+    <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-zinc-800/60 bg-zinc-950/50 px-3 backdrop-blur sm:gap-4 sm:px-4 md:px-6">
+      <div className="flex flex-1 items-center gap-2 sm:gap-4">
+        {/* Mobile menu button */}
+        <button
+          type="button"
+          onClick={onMenuClick}
+          className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-200 md:hidden"
+          aria-label="Open menu"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+        <div className="relative flex-1 sm:max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
           <input
             type="search"

@@ -86,6 +86,17 @@ body {
   transition: width 0.25s ease, min-width 0.25s ease;
 }
 
+/* Prevent body scroll when mobile drawer is open */
+body:has(.fixed.left-0.top-0.z-50.translate-x-0) {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  body:has(.fixed.left-0.top-0.z-50.translate-x-0) {
+    overflow: hidden;
+  }
+}
+
 /* Light theme component overrides */
 :root.light .text-zinc-400 {
   color: #6b7280;

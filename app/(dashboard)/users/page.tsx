@@ -47,15 +47,15 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Users</h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="text-xl sm:text-2xl font-semibold text-white">Users</h1>
+        <p className="mt-1 text-xs sm:text-sm text-zinc-400">
           Manage your team and customer accounts
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
           <input
@@ -101,7 +101,8 @@ export default function UsersPage() {
       </div>
 
       <div className="glass-card transition-fade-in overflow-hidden p-0">
-        <Table<User>
+        <div className="p-3 sm:p-0">
+          <Table<User>
           columns={[
             { key: "name", label: "Name" },
             { key: "email", label: "Email" },
@@ -127,18 +128,19 @@ export default function UsersPage() {
           ]}
           data={paginated}
           keyExtractor={(u) => u.id}
-        />
-        <div className="flex items-center justify-between border-t border-zinc-800/60 px-4 py-3">
-          <p className="text-sm text-zinc-500">
+          />
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row items-start sm:items-center justify-between border-t border-zinc-800/60 px-3 sm:px-4 py-3">
+          <p className="text-xs sm:text-sm text-zinc-500">
             Showing {(page - 1) * ITEMS_PER_PAGE + 1}–
             {Math.min(page * ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <button
               type="button"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-sm text-zinc-300 disabled:opacity-50 hover:bg-white/5"
+              className="flex-1 sm:flex-initial rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs sm:text-sm text-zinc-300 disabled:opacity-50 hover:bg-white/5"
             >
               Previous
             </button>
@@ -146,7 +148,7 @@ export default function UsersPage() {
               type="button"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-sm text-zinc-300 disabled:opacity-50 hover:bg-white/5"
+              className="flex-1 sm:flex-initial rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs sm:text-sm text-zinc-300 disabled:opacity-50 hover:bg-white/5"
             >
               Next
             </button>

@@ -14,15 +14,15 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]["id"]>("profile");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Settings</h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="text-xl sm:text-2xl font-semibold text-white">Settings</h1>
+        <p className="mt-1 text-xs sm:text-sm text-zinc-400">
           Profile, workspace, and preferences
         </p>
       </div>
 
-      <div className="flex gap-1 rounded-lg border border-zinc-800/60 bg-zinc-900/30 p-1">
+      <div className="flex gap-1 rounded-lg border border-zinc-800/60 bg-zinc-900/30 p-1 overflow-x-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -30,7 +30,7 @@ export default function SettingsPage() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm transition-colors sm:flex-initial ${
+              className={`flex flex-1 items-center justify-center gap-1 sm:gap-2 rounded-md px-2 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm transition-colors sm:flex-initial whitespace-nowrap ${
                 activeTab === tab.id
                   ? "bg-zinc-800/80 text-white"
                   : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
@@ -43,7 +43,7 @@ export default function SettingsPage() {
         })}
       </div>
 
-      <div className="glass-card transition-fade-in p-6">
+      <div className="glass-card transition-fade-in p-4 sm:p-6">
         {activeTab === "profile" && (
           <div className="space-y-4">
             <h2 className="text-lg font-medium text-white">Profile</h2>
