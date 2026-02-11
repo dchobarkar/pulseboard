@@ -6,6 +6,7 @@ import { Table } from "@/components/ui/Table";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Dropdown } from "@/components/ui/Dropdown";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { usersData, type User, type UserRole, type UserStatus } from "@/data/dashboard";
 
 const roleVariant: Record<UserRole, "default" | "info" | "warning" | "success"> = {
@@ -127,8 +128,9 @@ export default function UsersPage() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-white">Users</h1>
+        <div className="flex-1">
+          <Breadcrumbs />
+          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Users</h1>
           <p className="mt-1 text-xs sm:text-sm text-zinc-400">
             Manage your team and customer accounts
           </p>
@@ -244,6 +246,18 @@ export default function UsersPage() {
           ]}
           data={paginated}
           keyExtractor={(u) => u.id}
+          emptyState={{
+            title: "No users found",
+            description: filtered.length === 0 && search
+              ? "Try adjusting your search or filters"
+              : "Get started by adding your first user",
+            action: filtered.length === 0 && !search
+              ? {
+                  label: "Add User",
+                  onClick: () => setIsAddModalOpen(true),
+                }
+              : undefined,
+          }}
           />
         </div>
         <div className="flex flex-col gap-2 sm:flex-row items-start sm:items-center justify-between border-t border-zinc-800/60 px-3 sm:px-4 py-3">

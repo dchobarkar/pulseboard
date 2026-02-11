@@ -1,10 +1,21 @@
 "use client";
 
+import { EmptyState } from "./EmptyState";
+import { Database } from "lucide-react";
+
 interface TableProps<T> {
   columns: { key: keyof T | string; label: string; render?: (item: T) => React.ReactNode }[];
   data: T[];
   keyExtractor: (item: T) => string;
   className?: string;
+  emptyState?: {
+    title: string;
+    description?: string;
+    action?: {
+      label: string;
+      onClick: () => void;
+    };
+  };
 }
 
 export function Table<T extends object>({
@@ -12,7 +23,19 @@ export function Table<T extends object>({
   data,
   keyExtractor,
   className = "",
+  emptyState,
 }: TableProps<T>) {
+  if (data.length === 0) {
+    return (
+      <EmptyState
+        icon={Database}
+        title={emptyState?.title || "No data available"}
+        description={emptyState?.description}
+        action={emptyState?.action}
+      />
+    );
+  }
+
   return (
     <div className={`overflow-x-auto -mx-4 sm:mx-0 ${className}`}>
       <div className="inline-block min-w-full align-middle">

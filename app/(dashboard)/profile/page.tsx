@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User, Mail, Calendar, Building2, MapPin, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 interface ProfileData {
   displayName: string;
@@ -54,8 +55,9 @@ export default function ProfilePage() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-white">Profile</h1>
+        <div className="flex-1">
+          <Breadcrumbs />
+          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Profile</h1>
           <p className="mt-1 text-xs sm:text-sm text-zinc-400">
             View and manage your profile information
           </p>

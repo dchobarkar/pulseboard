@@ -105,6 +105,19 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
+        {/* Alert Indicator */}
+        <button
+          type="button"
+          onClick={() => {
+            // Scroll to top or show alerts
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="relative rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-200"
+          title="System alerts"
+        >
+          <div className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-rose-500 border-2 border-zinc-950 animate-pulse" />
+          <div className="h-2 w-2 rounded-full bg-rose-400" />
+        </button>
         <NotificationsDropdown
           notifications={notifications}
           onDismiss={handleDismissNotification}

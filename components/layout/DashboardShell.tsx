@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { Navbar } from "./Navbar";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  useKeyboardShortcuts();
 
   return (
     <div className="flex h-screen overflow-hidden bg-[var(--background)]">

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { KpiCard } from "@/components/ui/KpiCard";
 import { Modal } from "@/components/ui/Modal";
 import { Dropdown } from "@/components/ui/Dropdown";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import {
   Plus,
   DollarSign,
@@ -163,8 +164,9 @@ export default function BillingPage() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-white">Billing</h1>
+        <div className="flex-1">
+          <Breadcrumbs />
+          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Billing</h1>
           <p className="mt-1 text-xs sm:text-sm text-zinc-400">
             MRR, plans, and invoices
           </p>
@@ -293,6 +295,18 @@ export default function BillingPage() {
           ]}
           data={filtered}
           keyExtractor={(r) => r.id}
+          emptyState={{
+            title: "No invoices found",
+            description: filtered.length === 0 && search
+              ? "Try adjusting your search or filters"
+              : "Get started by creating your first invoice",
+            action: filtered.length === 0 && !search
+              ? {
+                  label: "Add Invoice",
+                  onClick: handleAddInvoice,
+                }
+              : undefined,
+          }}
         />
       </div>
 

@@ -28,6 +28,8 @@ import {
 import { Modal } from "@/components/ui/Modal";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Badge } from "@/components/ui/Badge";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 const statusConfig: Record<
   Report["status"],
@@ -409,8 +411,9 @@ export default function ReportsPage() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-white">
+        <div className="flex-1">
+          <Breadcrumbs />
+          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">
             Reports
           </h1>
           <p className="mt-1 text-xs sm:text-sm text-zinc-400">
@@ -533,10 +536,21 @@ export default function ReportsPage() {
       {/* Reports List */}
       <div className="glass-card transition-fade-in divide-y divide-zinc-800/60">
         {filtered.length === 0 ? (
-          <div className="p-8 text-center">
-            <FileText className="mx-auto h-12 w-12 text-zinc-600 mb-3" />
-            <p className="text-sm text-zinc-400">No reports found</p>
-          </div>
+          <EmptyState
+            icon={FileText}
+            title="No reports found"
+            description={search || statusFilter || typeFilter || categoryFilter
+              ? "Try adjusting your search or filters"
+              : "Get started by generating your first report"}
+            action={
+              !search && !statusFilter && !typeFilter && !categoryFilter
+                ? {
+                    label: "Generate Report",
+                    onClick: handleAddReport,
+                  }
+                : undefined
+            }
+          />
         ) : (
           filtered.map((report) => {
             const config = statusConfig[report.status];

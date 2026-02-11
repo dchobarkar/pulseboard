@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { User, Building2, Bell, Shield, Settings as SettingsIcon, ExternalLink } from "lucide-react";
 import { Sun, Moon } from "lucide-react";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 const tabs = [
   { id: "profile", label: "Profile", icon: User },
@@ -191,7 +192,8 @@ export function SettingsContent() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-xl sm:text-2xl font-semibold text-white">Settings</h1>
+        <Breadcrumbs />
+        <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Settings</h1>
         <p className="mt-1 text-xs sm:text-sm text-zinc-400">
           Profile, workspace, and preferences
         </p>
