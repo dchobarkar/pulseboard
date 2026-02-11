@@ -1,7 +1,3 @@
-/**
- * Settings-related constants and default data
- */
-
 export interface SettingsData {
   profile: {
     displayName: string;

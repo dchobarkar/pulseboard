@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AreaChart,
   Area,
@@ -15,7 +13,7 @@ interface DataPoint {
   users: number;
 }
 
-export function UserGrowthChart({ data }: { data: DataPoint[] }) {
+const UserGrowthChart = ({ data }: { data: DataPoint[] }) => {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <AreaChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
@@ -31,17 +29,17 @@ export function UserGrowthChart({ data }: { data: DataPoint[] }) {
           stroke="#71717a"
           tick={{ fill: "#71717a", fontSize: 12 }}
         />
-        <YAxis
-          stroke="#71717a"
-          tick={{ fill: "#71717a", fontSize: 12 }}
-        />
+        <YAxis stroke="#71717a" tick={{ fill: "#71717a", fontSize: 12 }} />
         <Tooltip
           contentStyle={{
             background: "rgba(24,24,28,0.95)",
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number | undefined) => [(value ?? 0).toLocaleString(), "Users"]}
+          formatter={(value: number | undefined) => [
+            (value ?? 0).toLocaleString(),
+            "Users",
+          ]}
         />
         <Area
           type="monotone"
@@ -53,4 +51,6 @@ export function UserGrowthChart({ data }: { data: DataPoint[] }) {
       </AreaChart>
     </ResponsiveContainer>
   );
-}
+};
+
+export default UserGrowthChart;

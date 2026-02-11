@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BarChart,
   Bar,
@@ -15,7 +13,7 @@ interface RetentionPoint {
   rate: number;
 }
 
-export function RetentionChart({ data }: { data: RetentionPoint[] }) {
+const RetentionChart = ({ data }: { data: RetentionPoint[] }) => {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <BarChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
@@ -37,7 +35,10 @@ export function RetentionChart({ data }: { data: RetentionPoint[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number | undefined) => [`${value ?? 0}%`, "Retention"]}
+          formatter={(value: number | undefined) => [
+            `${value ?? 0}%`,
+            "Retention",
+          ]}
         />
         <Bar
           dataKey="rate"
@@ -48,4 +49,6 @@ export function RetentionChart({ data }: { data: RetentionPoint[] }) {
       </BarChart>
     </ResponsiveContainer>
   );
-}
+};
+
+export default RetentionChart;

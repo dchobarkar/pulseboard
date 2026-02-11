@@ -1,10 +1,13 @@
-"use client";
-
-import { EmptyState } from "./EmptyState";
 import { Database } from "lucide-react";
 
+import EmptyState from "./EmptyState";
+
 interface TableProps<T> {
-  columns: { key: keyof T | string; label: string; render?: (item: T) => React.ReactNode }[];
+  columns: {
+    key: keyof T | string;
+    label: string;
+    render?: (item: T) => React.ReactNode;
+  }[];
   data: T[];
   keyExtractor: (item: T) => string;
   className?: string;
@@ -18,7 +21,7 @@ interface TableProps<T> {
   };
 }
 
-export function Table<T extends object>({
+function Table<T extends object>({
   columns,
   data,
   keyExtractor,
@@ -43,7 +46,10 @@ export function Table<T extends object>({
           <thead>
             <tr className="border-b border-zinc-700/60 text-zinc-400">
               {columns.map((col) => (
-                <th key={String(col.key)} className="pb-2 sm:pb-3 pl-3 pr-3 sm:pl-4 sm:pr-4 font-medium whitespace-nowrap">
+                <th
+                  key={String(col.key)}
+                  className="pb-2 sm:pb-3 pl-3 pr-3 sm:pl-4 sm:pr-4 font-medium whitespace-nowrap"
+                >
                   {col.label}
                 </th>
               ))}
@@ -56,10 +62,16 @@ export function Table<T extends object>({
                 className="border-b border-zinc-800/60 transition-colors hover:bg-white/3"
               >
                 {columns.map((col) => (
-                  <td key={String(col.key)} className="py-2 sm:py-3 pl-3 pr-3 sm:pl-4 sm:pr-4 whitespace-nowrap">
+                  <td
+                    key={String(col.key)}
+                    className="py-2 sm:py-3 pl-3 pr-3 sm:pl-4 sm:pr-4 whitespace-nowrap"
+                  >
                     {col.render
                       ? col.render(item)
-                      : String((item as Record<string, unknown>)[String(col.key)] ?? "")}
+                      : String(
+                          (item as Record<string, unknown>)[String(col.key)] ??
+                            "",
+                        )}
                   </td>
                 ))}
               </tr>
@@ -70,3 +82,5 @@ export function Table<T extends object>({
     </div>
   );
 }
+
+export default Table;

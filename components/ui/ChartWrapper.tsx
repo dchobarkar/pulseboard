@@ -1,8 +1,9 @@
 "use client";
 
-import { Download, FileDown } from "lucide-react";
-import { exportChartAsPNG } from "@/lib/export";
 import { useState } from "react";
+import { Download, FileDown } from "lucide-react";
+
+import { exportChartAsPNG } from "@/lib/export";
 
 interface ChartWrapperProps {
   title?: string;
@@ -13,14 +14,14 @@ interface ChartWrapperProps {
   showExport?: boolean;
 }
 
-export function ChartWrapper({
+const ChartWrapper = ({
   title,
   children,
   className = "",
   chartId,
   onExportCSV,
   showExport = true,
-}: ChartWrapperProps) {
+}: ChartWrapperProps) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExportPNG = () => {
@@ -65,11 +66,11 @@ export function ChartWrapper({
           </div>
         )}
       </div>
-      <div className="min-h-[200px] sm:min-h-[240px] overflow-x-auto">
-        <div id={chartId}>
-          {children}
-        </div>
+      <div className="min-h-50 sm:min-h-60 overflow-x-auto">
+        <div id={chartId}>{children}</div>
       </div>
     </div>
   );
-}
+};
+
+export default ChartWrapper;

@@ -3,20 +3,23 @@
 import { CheckCircle2, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function LoggedOutPage() {
+const Page = () => {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--background)] p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="glass-card transition-fade-in p-8 text-center max-w-md w-full">
         <div className="flex justify-center mb-4">
           <div className="rounded-full bg-emerald-500/20 p-3">
             <CheckCircle2 className="h-8 w-8 text-emerald-400" />
           </div>
         </div>
-        <h1 className="text-2xl font-semibold text-white mb-2">You're Logged Out</h1>
+        <h1 className="text-2xl font-semibold text-white mb-2">
+          You&apos;re Logged Out
+        </h1>
         <p className="text-sm text-zinc-400 mb-6">
-          You have been successfully logged out of PulseBoard. Thank you for using our platform.
+          You have been successfully logged out of PulseBoard. Thank you for
+          using our platform.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
@@ -38,4 +41,6 @@ export default function LoggedOutPage() {
       </div>
     </div>
   );
-}
+};
+
+export default Page;

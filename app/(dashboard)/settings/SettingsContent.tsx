@@ -2,11 +2,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { User, Building2, Bell, Shield, Settings as SettingsIcon, ExternalLink } from "lucide-react";
-import { Sun, Moon } from "lucide-react";
+import {
+  User,
+  Building2,
+  Bell,
+  Shield,
+  Settings as SettingsIcon,
+  ExternalLink,
+} from "lucide-react";
+
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import { DEFAULT_SETTINGS, type SettingsData, SETTINGS_TABS } from "@/data/settings";
 import { STORAGE_KEYS } from "@/data/constants";
+import { DEFAULT_SETTINGS, type SettingsData } from "@/data/settings";
 
 const tabs = [
   { id: "profile", label: "Profile", icon: User },
@@ -16,13 +23,17 @@ const tabs = [
   { id: "security", label: "Security", icon: Shield },
 ] as const;
 
-export function SettingsContent() {
+const SettingsContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]["id"]>("profile");
+  const [activeTab, setActiveTab] =
+    useState<(typeof tabs)[number]["id"]>("profile");
   const [settings, setSettings] = useState<SettingsData>(DEFAULT_SETTINGS);
   const [isSaving, setIsSaving] = useState(false);
-  const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [saveMessage, setSaveMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
   const saveMessageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load settings from localStorage on mount
@@ -37,9 +48,12 @@ export function SettingsContent() {
           // Silently fail - use default settings
         }
       }
-      
+
       // Load theme from localStorage and sync
-      const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
+      const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as
+        | "dark"
+        | "light"
+        | null;
       if (savedTheme) {
         setSettings((prev) => ({
           ...prev,
@@ -65,13 +79,19 @@ export function SettingsContent() {
       if (e.key === STORAGE_KEYS.THEME && e.newValue) {
         setSettings((prev) => ({
           ...prev,
-          preferences: { ...prev.preferences, theme: e.newValue as "dark" | "light" },
+          preferences: {
+            ...prev.preferences,
+            theme: e.newValue as "dark" | "light",
+          },
         }));
       }
     };
 
     const handleThemeChange = () => {
-      const currentTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
+      const currentTheme = localStorage.getItem(STORAGE_KEYS.THEME) as
+        | "dark"
+        | "light"
+        | null;
       if (currentTheme && currentTheme !== settings.preferences.theme) {
         setSettings((prev) => ({
           ...prev,
@@ -120,15 +140,21 @@ export function SettingsContent() {
           JSON.stringify({
             ...existing,
             [section]: settings[section],
-          })
+          }),
         );
       }
 
       setSaveMessage({ type: "success", text: "Settings saved successfully!" });
-      saveMessageTimeoutRef.current = setTimeout(() => setSaveMessage(null), 3000);
+      saveMessageTimeoutRef.current = setTimeout(
+        () => setSaveMessage(null),
+        3000,
+      );
     } catch {
       setSaveMessage({ type: "error", text: "Failed to save settings" });
-      saveMessageTimeoutRef.current = setTimeout(() => setSaveMessage(null), 3000);
+      saveMessageTimeoutRef.current = setTimeout(
+        () => setSaveMessage(null),
+        3000,
+      );
     } finally {
       setIsSaving(false);
     }
@@ -152,7 +178,9 @@ export function SettingsContent() {
     <div className="space-y-4 sm:space-y-6">
       <div>
         <Breadcrumbs />
-        <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Settings</h1>
+        <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">
+          Settings
+        </h1>
         <p className="mt-1 text-xs sm:text-sm text-zinc-400">
           Profile, workspace, and preferences
         </p>
@@ -223,7 +251,9 @@ export function SettingsContent() {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm text-zinc-400">Email</label>
+                <label className="mb-1 block text-sm text-zinc-400">
+                  Email
+                </label>
                 <input
                   type="email"
                   value={settings.profile.email}
@@ -261,7 +291,10 @@ export function SettingsContent() {
                   onChange={(e) =>
                     setSettings((prev) => ({
                       ...prev,
-                      preferences: { ...prev.preferences, language: e.target.value },
+                      preferences: {
+                        ...prev.preferences,
+                        language: e.target.value,
+                      },
                     }))
                   }
                   className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
@@ -281,7 +314,10 @@ export function SettingsContent() {
                   onChange={(e) =>
                     setSettings((prev) => ({
                       ...prev,
-                      preferences: { ...prev.preferences, timezone: e.target.value },
+                      preferences: {
+                        ...prev.preferences,
+                        timezone: e.target.value,
+                      },
                     }))
                   }
                   className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
@@ -301,7 +337,10 @@ export function SettingsContent() {
                   onChange={(e) =>
                     setSettings((prev) => ({
                       ...prev,
-                      preferences: { ...prev.preferences, dateFormat: e.target.value },
+                      preferences: {
+                        ...prev.preferences,
+                        dateFormat: e.target.value,
+                      },
                     }))
                   }
                   className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
@@ -315,7 +354,9 @@ export function SettingsContent() {
                 <div>
                   <span className="text-sm text-zinc-200">Theme</span>
                   <p className="text-xs text-zinc-500 mt-0.5">
-                    {settings.preferences.theme === "dark" ? "Dark Mode" : "Light Mode"}
+                    {settings.preferences.theme === "dark"
+                      ? "Dark Mode"
+                      : "Light Mode"}
                   </p>
                 </div>
                 <label className="relative inline-flex cursor-pointer items-center">
@@ -325,7 +366,7 @@ export function SettingsContent() {
                     onChange={handleThemeToggle}
                     className="peer sr-only"
                   />
-                  <div className="h-6 w-11 rounded-full bg-zinc-700 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-zinc-600 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-focus:outline-none transition-colors" />
+                  <div className="h-6 w-11 rounded-full bg-zinc-700 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-zinc-600 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-focus:outline-none transition-colors" />
                 </label>
               </div>
             </div>
@@ -387,7 +428,11 @@ export function SettingsContent() {
                   <label className="relative inline-flex cursor-pointer items-center">
                     <input
                       type="checkbox"
-                      checked={settings.notifications[item.id as keyof typeof settings.notifications]}
+                      checked={
+                        settings.notifications[
+                          item.id as keyof typeof settings.notifications
+                        ]
+                      }
                       onChange={(e) =>
                         setSettings((prev) => ({
                           ...prev,
@@ -399,7 +444,7 @@ export function SettingsContent() {
                       }
                       className="peer sr-only"
                     />
-                    <div className="h-6 w-11 rounded-full bg-zinc-700 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-zinc-600 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-focus:outline-none" />
+                    <div className="h-6 w-11 rounded-full bg-zinc-700 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-zinc-600 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-focus:outline-none" />
                   </label>
                 </div>
               ))}
@@ -429,7 +474,10 @@ export function SettingsContent() {
                   onChange={(e) =>
                     setSettings((prev) => ({
                       ...prev,
-                      security: { ...prev.security, currentPassword: e.target.value },
+                      security: {
+                        ...prev.security,
+                        currentPassword: e.target.value,
+                      },
                     }))
                   }
                   placeholder="••••••••"
@@ -446,7 +494,10 @@ export function SettingsContent() {
                   onChange={(e) =>
                     setSettings((prev) => ({
                       ...prev,
-                      security: { ...prev.security, newPassword: e.target.value },
+                      security: {
+                        ...prev.security,
+                        newPassword: e.target.value,
+                      },
                     }))
                   }
                   placeholder="••••••••"
@@ -464,7 +515,11 @@ export function SettingsContent() {
                   security: { currentPassword: "", newPassword: "" },
                 }));
               }}
-              disabled={isSaving || !settings.security.currentPassword || !settings.security.newPassword}
+              disabled={
+                isSaving ||
+                !settings.security.currentPassword ||
+                !settings.security.newPassword
+              }
               className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isSaving ? "Updating..." : "Update password"}
@@ -474,4 +529,6 @@ export function SettingsContent() {
       </div>
     </div>
   );
-}
+};
+
+export default SettingsContent;

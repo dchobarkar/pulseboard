@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AreaChart,
   Area,
@@ -15,7 +13,7 @@ interface DataPoint {
   mrr: number;
 }
 
-export function MrrChart({ data }: { data: DataPoint[] }) {
+const MrrChart = ({ data }: { data: DataPoint[] }) => {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <AreaChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
@@ -42,7 +40,10 @@ export function MrrChart({ data }: { data: DataPoint[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number | undefined) => [`$${(value ?? 0).toLocaleString()}`, "MRR"]}
+          formatter={(value: number | undefined) => [
+            `$${(value ?? 0).toLocaleString()}`,
+            "MRR",
+          ]}
         />
         <Area
           type="monotone"
@@ -54,4 +55,6 @@ export function MrrChart({ data }: { data: DataPoint[] }) {
       </AreaChart>
     </ResponsiveContainer>
   );
-}
+};
+
+export default MrrChart;

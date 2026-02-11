@@ -1,7 +1,3 @@
-/**
- * TypeScript types and interfaces
- */
-
 export type UserRole = "admin" | "member" | "viewer" | "guest";
 export type UserStatus = "active" | "inactive" | "pending";
 
@@ -41,7 +37,14 @@ export interface Report {
 
 export interface Notification {
   id: string;
-  type: "success" | "warning" | "info" | "payment" | "user" | "report" | "growth";
+  type:
+    | "success"
+    | "warning"
+    | "info"
+    | "payment"
+    | "user"
+    | "report"
+    | "growth";
   title: string;
   message: string;
   time: string;

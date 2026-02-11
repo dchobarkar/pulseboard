@@ -2,17 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  BarChart3,
-  Users,
-  CreditCard,
-  FileText,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  X,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import { NAV_ITEMS } from "@/data/navigation";
@@ -22,7 +12,7 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
+const Sidebar = ({ isOpen = true, onClose }: SidebarProps) => {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -72,10 +62,14 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               <X className="h-5 w-5" />
             </button>
           </div>
-          <nav className="flex-1 space-y-0.5 overflow-y-auto p-2" aria-label="Main">
+          <nav
+            className="flex-1 space-y-0.5 overflow-y-auto p-2"
+            aria-label="Main"
+          >
             {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
               const isActive =
-                pathname === href || (href !== "/" && pathname.startsWith(href));
+                pathname === href ||
+                (href !== "/" && pathname.startsWith(href));
               return (
                 <Link
                   key={href}
@@ -101,7 +95,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   return (
     <aside
       className={`sidebar-transition hidden md:flex h-full flex-col border-r border-zinc-800/60 bg-zinc-950/80 backdrop-blur ${
-        collapsed ? "w-[72px] min-w-[72px]" : "w-56 min-w-[224px]"
+        collapsed ? "w-18 min-w-18" : "w-56 min-w-56"
       }`}
     >
       <div className="flex h-14 items-center border-b border-zinc-800/60 px-3">
@@ -150,4 +144,6 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
       </div>
     </aside>
   );
-}
+};
+
+export default Sidebar;

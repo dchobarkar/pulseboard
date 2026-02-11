@@ -8,7 +8,7 @@ interface TooltipProps {
   position?: "top" | "bottom" | "left" | "right";
 }
 
-export function Tooltip({ content, children, position = "top" }: TooltipProps) {
+const Tooltip = ({ content, children, position = "top" }: TooltipProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const positionClasses = {
@@ -35,14 +35,16 @@ export function Tooltip({ content, children, position = "top" }: TooltipProps) {
               position === "top"
                 ? "top-full left-1/2 -translate-x-1/2 border-t-zinc-700/60 border-l-transparent border-r-transparent border-b-transparent"
                 : position === "bottom"
-                ? "bottom-full left-1/2 -translate-x-1/2 border-b-zinc-700/60 border-l-transparent border-r-transparent border-t-transparent"
-                : position === "left"
-                ? "left-full top-1/2 -translate-y-1/2 border-l-zinc-700/60 border-t-transparent border-b-transparent border-r-transparent"
-                : "right-full top-1/2 -translate-y-1/2 border-r-zinc-700/60 border-t-transparent border-b-transparent border-l-transparent"
+                  ? "bottom-full left-1/2 -translate-x-1/2 border-b-zinc-700/60 border-l-transparent border-r-transparent border-t-transparent"
+                  : position === "left"
+                    ? "left-full top-1/2 -translate-y-1/2 border-l-zinc-700/60 border-t-transparent border-b-transparent border-r-transparent"
+                    : "right-full top-1/2 -translate-y-1/2 border-r-zinc-700/60 border-t-transparent border-b-transparent border-l-transparent"
             } border-4`}
           />
         </div>
       )}
     </div>
   );
-}
+};
+
+export default Tooltip;

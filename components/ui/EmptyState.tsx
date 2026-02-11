@@ -1,5 +1,3 @@
-"use client";
-
 import { LucideIcon } from "lucide-react";
 
 interface EmptyStateProps {
@@ -12,7 +10,12 @@ interface EmptyStateProps {
   };
 }
 
-export function EmptyState({ icon: Icon, title, description, action }: EmptyStateProps) {
+const EmptyState = ({
+  icon: Icon,
+  title,
+  description,
+  action,
+}: EmptyStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
       {Icon && (
@@ -35,4 +38,6 @@ export function EmptyState({ icon: Icon, title, description, action }: EmptyStat
       )}
     </div>
   );
-}
+};
+
+export default EmptyState;

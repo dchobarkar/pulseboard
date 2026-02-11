@@ -1,5 +1,3 @@
-"use client";
-
 import { ReactNode } from "react";
 
 interface CardProps {
@@ -16,7 +14,9 @@ const Card = ({ children, className = "", padding = "md" }: CardProps) => {
   };
 
   return (
-    <div className={`glass-card transition-fade-in ${paddingStyles[padding]} ${className}`}>
+    <div
+      className={`glass-card transition-fade-in ${paddingStyles[padding]} ${className}`}
+    >
       {children}
     </div>
   );

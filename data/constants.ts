@@ -1,7 +1,3 @@
-/**
- * General application constants
- */
-
 // Pagination
 export const ITEMS_PER_PAGE = 4; // Default items per page for tables
 export const DEFAULT_PAGE = 1;

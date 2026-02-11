@@ -1,7 +1,3 @@
-/**
- * Notification-related constants, configurations, and data
- */
-
 import {
   CheckCircle2,
   AlertCircle,
@@ -11,6 +7,7 @@ import {
   FileText,
   TrendingUp,
 } from "lucide-react";
+
 import type { Notification } from "./types";
 export type { Notification };
 

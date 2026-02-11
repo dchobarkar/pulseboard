@@ -1,18 +1,20 @@
-/**
- * User-related constants, configurations, and data
- */
-
 import type { UserRole, UserStatus, User } from "./types";
 export type { UserRole, UserStatus, User };
 
-export const ROLE_VARIANT: Record<UserRole, "default" | "info" | "warning" | "success"> = {
+export const ROLE_VARIANT: Record<
+  UserRole,
+  "default" | "info" | "warning" | "success"
+> = {
   admin: "info",
   member: "default",
   viewer: "warning",
   guest: "default",
 };
 
-export const STATUS_VARIANT: Record<UserStatus, "success" | "error" | "warning"> = {
+export const STATUS_VARIANT: Record<
+  UserStatus,
+  "success" | "error" | "warning"
+> = {
   active: "success",
   inactive: "error",
   pending: "warning",

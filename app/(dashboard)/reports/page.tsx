@@ -6,8 +6,6 @@ import {
   Plus,
   Search,
   MoreVertical,
-  Edit2,
-  Trash2,
   Mail,
   Calendar,
   Clock,
@@ -17,6 +15,14 @@ import {
   FileJson,
   X,
 } from "lucide-react";
+
+import Modal from "@/components/ui/Modal";
+import Dropdown from "@/components/ui/Dropdown";
+import Badge from "@/components/ui/Badge";
+import PageHeader from "@/components/ui/PageHeader";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import EmptyState from "@/components/ui/EmptyState";
 import {
   reportsData,
   reportTemplates,
@@ -30,20 +36,8 @@ import {
   type Report,
   type DatePreset,
 } from "@/data/reports";
-import Modal from "@/components/ui/Modal";
-import Dropdown from "@/components/ui/Dropdown";
-import Badge from "@/components/ui/Badge";
-import PageHeader from "@/components/ui/PageHeader";
-import { SearchBar } from "@/components/ui/SearchBar";
-import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
-import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
-import { CardHeader } from "@/components/ui/Card";
-import { FormField, Input, Select, Textarea } from "@/components/ui/FormField";
-import { EmptyState } from "@/components/ui/EmptyState";
 
-
-export default function ReportsPage() {
+const Page = () => {
   const [reports, setReports] = useState<Report[]>(reportsData);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
@@ -57,7 +51,7 @@ export default function ReportsPage() {
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [generatingReports, setGeneratingReports] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [useTemplate, setUseTemplate] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
@@ -95,14 +89,14 @@ export default function ReportsPage() {
       const matchType = !typeFilter || report.type === typeFilter;
       const matchCategory =
         !categoryFilter || report.category === categoryFilter;
-      
+
       // Date range filtering: check if report date range overlaps with selected date range
       let matchDateRange = true;
       if (dateFrom && dateTo) {
         // Only filter if both dates are selected
         const reportFrom = report.dateFrom || report.date;
         const reportTo = report.dateTo || report.date;
-        
+
         // Check if report date range overlaps with selected date range
         // Overlap occurs if: reportFrom <= dateTo && reportTo >= dateFrom
         matchDateRange = reportFrom <= dateTo && reportTo >= dateFrom;
@@ -111,10 +105,24 @@ export default function ReportsPage() {
         const reportTo = report.dateTo || report.date;
         matchDateRange = reportTo >= dateFrom;
       }
-      
-      return matchSearch && matchStatus && matchType && matchCategory && matchDateRange;
+
+      return (
+        matchSearch &&
+        matchStatus &&
+        matchType &&
+        matchCategory &&
+        matchDateRange
+      );
     });
-  }, [reports, search, statusFilter, typeFilter, categoryFilter, dateFrom, dateTo]);
+  }, [
+    reports,
+    search,
+    statusFilter,
+    typeFilter,
+    categoryFilter,
+    dateFrom,
+    dateTo,
+  ]);
 
   // Simulate report generation
   useEffect(() => {
@@ -122,8 +130,8 @@ export default function ReportsPage() {
       const timer = setTimeout(() => {
         setReports((prev) =>
           prev.map((r) =>
-            r.id === reportId ? { ...r, status: "ready" as const } : r
-          )
+            r.id === reportId ? { ...r, status: "ready" as const } : r,
+          ),
         );
         setGeneratingReports((prev) => {
           const next = new Set(prev);
@@ -158,7 +166,7 @@ export default function ReportsPage() {
   const applyDatePreset = (preset: DatePreset) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     if ("preset" in preset) {
       if (preset.preset === "thisMonth") {
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -168,12 +176,12 @@ export default function ReportsPage() {
         const firstDayLastMonth = new Date(
           today.getFullYear(),
           today.getMonth() - 1,
-          1
+          1,
         );
         const lastDayLastMonth = new Date(
           today.getFullYear(),
           today.getMonth(),
-          0
+          0,
         );
         setDateFrom(firstDayLastMonth.toISOString().split("T")[0]);
         setDateTo(lastDayLastMonth.toISOString().split("T")[0]);
@@ -239,18 +247,19 @@ export default function ReportsPage() {
 
   const handleEditReport = (report: Report) => {
     setSelectedReport(report);
-        setFormData({
-          name: report.name,
-          type: report.type,
-          category: report.category || "",
-          date: report.date,
-          description: report.description || "",
-          scheduled: report.scheduled || false,
-          scheduleFrequency: (report.scheduleFrequency || SCHEDULE_FREQUENCIES[1].value) as "daily" | "weekly" | "monthly",
-          emailRecipients: report.emailRecipients || [],
-          emailInput: "",
-        });
-        setIsEditModalOpen(true);
+    setFormData({
+      name: report.name,
+      type: report.type,
+      category: report.category || "",
+      date: report.date,
+      description: report.description || "",
+      scheduled: report.scheduled || false,
+      scheduleFrequency: (report.scheduleFrequency ||
+        SCHEDULE_FREQUENCIES[1].value) as "daily" | "weekly" | "monthly",
+      emailRecipients: report.emailRecipients || [],
+      emailInput: "",
+    });
+    setIsEditModalOpen(true);
   };
 
   const handleScheduleReport = (report: Report) => {
@@ -262,7 +271,8 @@ export default function ReportsPage() {
       date: report.date,
       description: report.description || "",
       scheduled: report.scheduled || false,
-      scheduleFrequency: (report.scheduleFrequency || SCHEDULE_FREQUENCIES[1].value) as "daily" | "weekly" | "monthly",
+      scheduleFrequency: (report.scheduleFrequency ||
+        SCHEDULE_FREQUENCIES[1].value) as "daily" | "weekly" | "monthly",
       emailRecipients: report.emailRecipients || [],
       emailInput: "",
     });
@@ -277,8 +287,8 @@ export default function ReportsPage() {
   const handleGenerateReport = (report: Report) => {
     setReports((prev) =>
       prev.map((r) =>
-        r.id === report.id ? { ...r, status: "generating" as const } : r
-      )
+        r.id === report.id ? { ...r, status: "generating" as const } : r,
+      ),
     );
     setGeneratingReports((prev) => new Set(prev).add(report.id));
   };
@@ -335,8 +345,8 @@ export default function ReportsPage() {
                     ? formData.emailRecipients
                     : undefined,
               }
-            : r
-        )
+            : r,
+        ),
       );
       setIsEditModalOpen(false);
       setSelectedReport(null);
@@ -355,8 +365,8 @@ export default function ReportsPage() {
                     ? formData.emailRecipients
                     : undefined,
               }
-            : r
-        )
+            : r,
+        ),
       );
       setIsScheduleModalOpen(false);
       setSelectedReport(null);
@@ -476,12 +486,12 @@ export default function ReportsPage() {
           }
           className="rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
         >
-              <option value="">All statuses</option>
-              {REPORT_STATUS_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+          <option value="">All statuses</option>
+          {REPORT_STATUS_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
         <select
           value={typeFilter}
@@ -515,9 +525,11 @@ export default function ReportsPage() {
           <EmptyState
             icon={FileText}
             title="No reports found"
-            description={search || statusFilter || typeFilter || categoryFilter
-              ? "Try adjusting your search or filters"
-              : "Get started by generating your first report"}
+            description={
+              search || statusFilter || typeFilter || categoryFilter
+                ? "Try adjusting your search or filters"
+                : "Get started by generating your first report"
+            }
             action={
               !search && !statusFilter && !typeFilter && !categoryFilter
                 ? {
@@ -529,8 +541,8 @@ export default function ReportsPage() {
           />
         ) : (
           filtered.map((report) => {
-            const config = REPORT_STATUS_CONFIG[report.status as Report["status"]];
-            const Icon = config.icon;
+            const config =
+              REPORT_STATUS_CONFIG[report.status as Report["status"]];
             return (
               <div
                 key={report.id}
@@ -740,7 +752,9 @@ export default function ReportsPage() {
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               placeholder="e.g., Monthly Revenue Summary"
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:border-indigo-500/50 focus:outline-none"
             />
@@ -810,7 +824,10 @@ export default function ReportsPage() {
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label htmlFor="modal-date-from" className="mb-1 block text-xs text-zinc-400">
+                <label
+                  htmlFor="modal-date-from"
+                  className="mb-1 block text-xs text-zinc-400"
+                >
                   From Date *
                 </label>
                 <input
@@ -823,7 +840,10 @@ export default function ReportsPage() {
                 />
               </div>
               <div>
-                <label htmlFor="modal-date-to" className="mb-1 block text-xs text-zinc-400">
+                <label
+                  htmlFor="modal-date-to"
+                  className="mb-1 block text-xs text-zinc-400"
+                >
                   To Date {dateFrom ? "" : "(select From Date first)"}
                 </label>
                 <input
@@ -856,7 +876,8 @@ export default function ReportsPage() {
               Report Date
             </label>
             <p className="mb-2 text-xs text-zinc-500">
-              The date this report will be associated with (for organization purposes)
+              The date this report will be associated with (for organization
+              purposes)
             </p>
             <input
               type="date"
@@ -1024,7 +1045,9 @@ export default function ReportsPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-sm text-zinc-400">Category</label>
+              <label className="mb-1 block text-sm text-zinc-400">
+                Category
+              </label>
               <select
                 value={formData.category}
                 onChange={(e) =>
@@ -1103,7 +1126,8 @@ export default function ReportsPage() {
               {selectedReport?.name}
             </p>
             <p className="text-xs text-zinc-400">
-              {selectedReport?.type} · {selectedReport?.category || "Uncategorized"}
+              {selectedReport?.type} ·{" "}
+              {selectedReport?.category || "Uncategorized"}
             </p>
           </div>
 
@@ -1130,12 +1154,15 @@ export default function ReportsPage() {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      scheduleFrequency: e.target.value as "daily" | "weekly" | "monthly",
+                      scheduleFrequency: e.target.value as
+                        | "daily"
+                        | "weekly"
+                        | "monthly",
                     })
                   }
                   className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
                 >
-                    {SCHEDULE_FREQUENCIES.map((freq) => (
+                  {SCHEDULE_FREQUENCIES.map((freq) => (
                     <option key={freq.value} value={freq.value}>
                       {freq.label}
                     </option>
@@ -1255,4 +1282,6 @@ export default function ReportsPage() {
       </Modal>
     </div>
   );
-}
+};
+
+export default Page;

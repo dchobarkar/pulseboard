@@ -1,30 +1,35 @@
 "use client";
 
-import { Search, Sun, Moon, User, Menu } from "lucide-react";
-import Dropdown from "@/components/ui/Dropdown";
-import { NotificationsDropdown } from "@/components/ui/NotificationsDropdown";
-import { KeyboardShortcutsDropdown } from "@/components/ui/KeyboardShortcutsModal";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { initialNotifications, type Notification } from "@/data/notifications";
+import { Search, Sun, Moon, User, Menu } from "lucide-react";
+
+import Dropdown from "@/components/ui/Dropdown";
+import NotificationsDropdown from "@/components/ui/NotificationsDropdown";
+import KeyboardShortcutsDropdown from "@/components/ui/KeyboardShortcutsModal";
+import { initialNotifications } from "@/data/notifications";
 import { STORAGE_KEYS } from "@/data/constants";
+import type { Notification } from "@/data/notifications";
 
 interface NavbarProps {
   onMenuClick?: () => void;
-  onShowShortcuts?: () => void;
 }
 
-export function Navbar({ onMenuClick, onShowShortcuts }: NavbarProps) {
+const Navbar = ({ onMenuClick }: NavbarProps) => {
   const router = useRouter();
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
+      const saved = localStorage.getItem(STORAGE_KEYS.THEME) as
+        | "dark"
+        | "light"
+        | null;
       return saved || "dark";
     }
     return "dark";
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const [notifications, setNotifications] =
+    useState<Notification[]>(initialNotifications);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -40,7 +45,10 @@ export function Navbar({ onMenuClick, onShowShortcuts }: NavbarProps) {
   // Listen for theme changes from settings page
   useEffect(() => {
     const handleThemeChange = () => {
-      const currentTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
+      const currentTheme = localStorage.getItem(STORAGE_KEYS.THEME) as
+        | "dark"
+        | "light"
+        | null;
       if (currentTheme && currentTheme !== theme) {
         setTheme(currentTheme);
       }
@@ -54,7 +62,7 @@ export function Navbar({ onMenuClick, onShowShortcuts }: NavbarProps) {
 
     window.addEventListener("themechange", handleThemeChange);
     window.addEventListener("storage", handleStorageChange);
-    
+
     // Check for theme changes periodically (since same-tab localStorage changes don't trigger storage event)
     const interval = setInterval(handleThemeChange, 100);
 
@@ -134,7 +142,11 @@ export function Navbar({ onMenuClick, onShowShortcuts }: NavbarProps) {
           className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-200"
           aria-label="Toggle theme"
         >
-          {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          {theme === "dark" ? (
+            <Sun className="h-5 w-5" />
+          ) : (
+            <Moon className="h-5 w-5" />
+          )}
         </button>
         <Dropdown
           trigger={
@@ -148,4 +160,6 @@ export function Navbar({ onMenuClick, onShowShortcuts }: NavbarProps) {
       </div>
     </header>
   );
-}
+};
+
+export default Navbar;

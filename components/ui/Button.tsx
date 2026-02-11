@@ -1,5 +1,3 @@
-"use client";
-
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
 
@@ -21,11 +19,13 @@ const Button = ({
   className = "",
   ...props
 }: ButtonProps) => {
-  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
-  
+  const baseStyles =
+    "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+
   const variantStyles = {
     primary: "bg-indigo-600 text-white hover:bg-indigo-700",
-    secondary: "border border-zinc-700/60 bg-zinc-900/50 text-zinc-300 hover:bg-white/5",
+    secondary:
+      "border border-zinc-700/60 bg-zinc-900/50 text-zinc-300 hover:bg-white/5",
     ghost: "text-zinc-400 hover:bg-white/5 hover:text-zinc-200",
     danger: "bg-rose-600 text-white hover:bg-rose-700",
   };

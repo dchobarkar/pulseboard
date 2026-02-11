@@ -1,29 +1,30 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, Plus, Edit2, Trash2, MoreVertical } from "lucide-react";
-import { Table } from "@/components/ui/Table";
+import { Plus, MoreVertical } from "lucide-react";
+
+import Table from "@/components/ui/Table";
 import Badge from "@/components/ui/Badge";
 import Modal from "@/components/ui/Modal";
 import Dropdown from "@/components/ui/Dropdown";
 import PageHeader from "@/components/ui/PageHeader";
-import { SearchBar } from "@/components/ui/SearchBar";
-import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
+import SearchBar from "@/components/ui/SearchBar";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
+import { ITEMS_PER_PAGE } from "@/data/constants";
 import {
   usersData,
-  type User,
-  type UserRole,
-  type UserStatus,
   ROLE_VARIANT,
   STATUS_VARIANT,
   ROLE_OPTIONS,
   STATUS_OPTIONS,
+  type User,
+  type UserRole,
+  type UserStatus,
 } from "@/data/users";
-import { ITEMS_PER_PAGE } from "@/data/constants";
 
-export default function UsersPage() {
+const Page = () => {
   const [users, setUsers] = useState<User[]>(usersData);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<UserRole | "">("");
@@ -54,9 +55,8 @@ export default function UsersPage() {
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
   const paginated = useMemo(
-    () =>
-      filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE),
-    [filtered, page]
+    () => filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE),
+    [filtered, page],
   );
 
   const handleAddUser = () => {
@@ -99,8 +99,8 @@ export default function UsersPage() {
     } else if (isEditModalOpen && selectedUser) {
       setUsers(
         users.map((u) =>
-          u.id === selectedUser.id ? { ...u, ...formData } : u
-        )
+          u.id === selectedUser.id ? { ...u, ...formData } : u,
+        ),
       );
       setIsEditModalOpen(false);
       setSelectedUser(null);
@@ -123,7 +123,6 @@ export default function UsersPage() {
       }
     }
   };
-
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -172,77 +171,76 @@ export default function UsersPage() {
       <Card className="overflow-hidden p-0">
         <div className="p-3 sm:p-0">
           <Table<User>
-          columns={[
-            { key: "name", label: "Name" },
-            { key: "email", label: "Email" },
-            {
-              key: "role",
-              label: "Role",
-              render: (u) => (
-                <Badge variant={ROLE_VARIANT[u.role]}>
-                  {u.role}
-                </Badge>
-              ),
-            },
-            {
-              key: "status",
-              label: "Status",
-              render: (u) => (
-                <Badge variant={STATUS_VARIANT[u.status]}>
-                  {u.status}
-                </Badge>
-              ),
-            },
-            { key: "createdAt", label: "Created" },
-            {
-              key: "actions",
-              label: "Actions",
-              render: (u) => (
-                <Dropdown
-                  trigger={
-                    <button
-                      type="button"
-                      className="rounded-lg p-1.5 text-zinc-400 hover:bg-white/5 hover:text-zinc-200 transition-colors"
-                      aria-label="User actions"
-                    >
-                      <MoreVertical className="h-4 w-4" />
-                    </button>
-                  }
-                  items={[
-                    {
-                      label: "Edit",
-                      onClick: () => handleEditUser(u),
-                    },
-                    {
-                      label: "Delete",
-                      onClick: () => handleDeleteUser(u),
-                    },
-                  ]}
-                  align="right"
-                />
-              ),
-            },
-          ]}
-          data={paginated}
-          keyExtractor={(u) => u.id}
-          emptyState={{
-            title: "No users found",
-            description: filtered.length === 0 && search
-              ? "Try adjusting your search or filters"
-              : "Get started by adding your first user",
-            action: filtered.length === 0 && !search
-              ? {
-                  label: "Add User",
-                  onClick: () => setIsAddModalOpen(true),
-                }
-              : undefined,
-          }}
+            columns={[
+              { key: "name", label: "Name" },
+              { key: "email", label: "Email" },
+              {
+                key: "role",
+                label: "Role",
+                render: (u) => (
+                  <Badge variant={ROLE_VARIANT[u.role]}>{u.role}</Badge>
+                ),
+              },
+              {
+                key: "status",
+                label: "Status",
+                render: (u) => (
+                  <Badge variant={STATUS_VARIANT[u.status]}>{u.status}</Badge>
+                ),
+              },
+              { key: "createdAt", label: "Created" },
+              {
+                key: "actions",
+                label: "Actions",
+                render: (u) => (
+                  <Dropdown
+                    trigger={
+                      <button
+                        type="button"
+                        className="rounded-lg p-1.5 text-zinc-400 hover:bg-white/5 hover:text-zinc-200 transition-colors"
+                        aria-label="User actions"
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </button>
+                    }
+                    items={[
+                      {
+                        label: "Edit",
+                        onClick: () => handleEditUser(u),
+                      },
+                      {
+                        label: "Delete",
+                        onClick: () => handleDeleteUser(u),
+                      },
+                    ]}
+                    align="right"
+                  />
+                ),
+              },
+            ]}
+            data={paginated}
+            keyExtractor={(u) => u.id}
+            emptyState={{
+              title: "No users found",
+              description:
+                filtered.length === 0 && search
+                  ? "Try adjusting your search or filters"
+                  : "Get started by adding your first user",
+              action:
+                filtered.length === 0 && !search
+                  ? {
+                      label: "Add User",
+                      onClick: () => setIsAddModalOpen(true),
+                    }
+                  : undefined,
+            }}
           />
         </div>
         <div className="flex flex-col gap-2 sm:flex-row items-start sm:items-center justify-between border-t border-zinc-800/60 px-3 sm:px-4 py-3">
           <p className="text-xs sm:text-sm text-zinc-500">
             Showing {(page - 1) * ITEMS_PER_PAGE + 1}–
-            {Math.min(page * ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
+            {Math.min(page * ITEMS_PER_PAGE, filtered.length)} of{" "}
+            {filtered.length}
           </p>
           <div className="flex gap-2 w-full sm:w-auto">
             <button
@@ -273,11 +271,15 @@ export default function UsersPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm text-zinc-400">Full Name</label>
+            <label className="mb-1 block text-sm text-zinc-400">
+              Full Name
+            </label>
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               placeholder="John Doe"
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:border-indigo-500/50 focus:outline-none"
             />
@@ -287,7 +289,9 @@ export default function UsersPage() {
             <input
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               placeholder="john@example.com"
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:border-indigo-500/50 focus:outline-none"
             />
@@ -313,7 +317,10 @@ export default function UsersPage() {
               <select
                 value={formData.status}
                 onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value as UserStatus })
+                  setFormData({
+                    ...formData,
+                    status: e.target.value as UserStatus,
+                  })
                 }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
@@ -354,11 +361,15 @@ export default function UsersPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm text-zinc-400">Full Name</label>
+            <label className="mb-1 block text-sm text-zinc-400">
+              Full Name
+            </label>
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:border-indigo-500/50 focus:outline-none"
             />
           </div>
@@ -367,7 +378,9 @@ export default function UsersPage() {
             <input
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:border-indigo-500/50 focus:outline-none"
             />
           </div>
@@ -392,7 +405,10 @@ export default function UsersPage() {
               <select
                 value={formData.status}
                 onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value as UserStatus })
+                  setFormData({
+                    ...formData,
+                    status: e.target.value as UserStatus,
+                  })
                 }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
@@ -465,4 +481,6 @@ export default function UsersPage() {
       </Modal>
     </div>
   );
-}
+};
+
+export default Page;

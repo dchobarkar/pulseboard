@@ -1,5 +1,3 @@
-"use client";
-
 import {
   LineChart,
   Line,
@@ -15,7 +13,7 @@ interface DataPoint {
   revenue: number;
 }
 
-export function RevenueLineChart({ data }: { data: DataPoint[] }) {
+const RevenueLineChart = ({ data }: { data: DataPoint[] }) => {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <LineChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
@@ -37,7 +35,10 @@ export function RevenueLineChart({ data }: { data: DataPoint[] }) {
             borderRadius: "8px",
           }}
           labelStyle={{ color: "#a1a1aa" }}
-          formatter={(value: number | undefined) => [`$${(value ?? 0).toLocaleString()}`, "Revenue"]}
+          formatter={(value: number | undefined) => [
+            `$${(value ?? 0).toLocaleString()}`,
+            "Revenue",
+          ]}
         />
         <Line
           type="monotone"
@@ -50,4 +51,6 @@ export function RevenueLineChart({ data }: { data: DataPoint[] }) {
       </LineChart>
     </ResponsiveContainer>
   );
-}
+};
+
+export default RevenueLineChart;

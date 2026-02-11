@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Eye, ChevronDown, ChevronUp } from "lucide-react";
+
 import Card from "./Card";
 import Button from "./Button";
 
@@ -56,7 +57,7 @@ const HiddenWidgetsPanel = ({
       {isExpanded && (
         <div className="mt-4 space-y-2">
           <p className="text-xs text-zinc-500 mb-3">
-            Click "Show" to restore any hidden widget
+            Click &quot;Show&quot; to restore any hidden widget
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {hiddenWidgetsList.map((widget) => (

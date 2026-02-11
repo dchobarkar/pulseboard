@@ -1,5 +1,3 @@
-"use client";
-
 import { ReactNode } from "react";
 
 interface FilterBarProps {
@@ -7,13 +5,13 @@ interface FilterBarProps {
   className?: string;
 }
 
-export function FilterBar({ children, className = "" }: FilterBarProps) {
+const FilterBar = ({ children, className = "" }: FilterBarProps) => {
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
       {children}
     </div>
   );
-}
+};
 
 interface FilterSelectProps {
   label?: string;
@@ -24,18 +22,20 @@ interface FilterSelectProps {
   className?: string;
 }
 
-export function FilterSelect({
+const FilterSelect = ({
   label,
   value,
   onChange,
   options,
   placeholder = "All",
   className = "",
-}: FilterSelectProps) {
+}: FilterSelectProps) => {
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       {label && (
-        <label className="text-xs text-zinc-400 whitespace-nowrap">{label}:</label>
+        <label className="text-xs text-zinc-400 whitespace-nowrap">
+          {label}:
+        </label>
       )}
       <select
         value={value}
@@ -51,4 +51,6 @@ export function FilterSelect({
       </select>
     </div>
   );
-}
+};
+
+export { FilterBar, FilterSelect };

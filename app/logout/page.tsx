@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { LogOut, CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function LogoutPage() {
+const Page = () => {
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoggingOut, setIsLoggingOut] = useState(true);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
 
@@ -14,7 +15,7 @@ export default function LogoutPage() {
     const timer = setTimeout(() => {
       setIsLoggingOut(false);
       setIsLoggedOut(true);
-      
+
       // Redirect to logged out page after showing success
       setTimeout(() => {
         router.push("/logged-out");
@@ -26,7 +27,7 @@ export default function LogoutPage() {
 
   if (isLoggedOut) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--background)] p-4">
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
         <div className="glass-card transition-fade-in p-8 text-center max-w-md w-full">
           <div className="flex justify-center mb-4">
             <div className="rounded-full bg-emerald-500/20 p-3">
@@ -50,7 +51,7 @@ export default function LogoutPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--background)] p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="glass-card transition-fade-in p-8 text-center max-w-md w-full">
         <div className="flex justify-center mb-4">
           <div className="rounded-full bg-indigo-500/20 p-3">
@@ -63,10 +64,15 @@ export default function LogoutPage() {
         </p>
         <div className="flex justify-center">
           <div className="h-1 w-32 bg-zinc-800 rounded-full overflow-hidden">
-            <div className="h-full bg-indigo-500 rounded-full animate-pulse" style={{ width: "60%" }} />
+            <div
+              className="h-full bg-indigo-500 rounded-full animate-pulse"
+              style={{ width: "60%" }}
+            />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Page;

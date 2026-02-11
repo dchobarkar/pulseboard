@@ -1,11 +1,10 @@
-/**
- * Billing-related constants, configurations, and data
- */
-
 import type { InvoiceStatus, Invoice } from "./types";
 export type { InvoiceStatus, Invoice };
 
-export const INVOICE_STATUS_VARIANT: Record<InvoiceStatus, "success" | "warning" | "error"> = {
+export const INVOICE_STATUS_VARIANT: Record<
+  InvoiceStatus,
+  "success" | "warning" | "error"
+> = {
   paid: "success",
   pending: "warning",
   overdue: "error",

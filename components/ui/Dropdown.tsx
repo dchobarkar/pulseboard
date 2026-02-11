@@ -16,14 +16,20 @@ interface DropdownProps {
   className?: string;
 }
 
-const Dropdown = ({ trigger, items, align = "right", className = "" }: DropdownProps) => {
+const Dropdown = ({
+  trigger,
+  items,
+  align = "right",
+  className = "",
+}: DropdownProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -42,7 +48,7 @@ const Dropdown = ({ trigger, items, align = "right", className = "" }: DropdownP
       </button>
       {open && (
         <div
-          className={`absolute top-full z-50 mt-2 min-w-[160px] rounded-lg border border-zinc-700/60 bg-zinc-900/95 py-1 shadow-xl backdrop-blur transition-opacity ${align === "right" ? "right-0" : "left-0"}`}
+          className={`absolute top-full z-50 mt-2 min-w-40 rounded-lg border border-zinc-700/60 bg-zinc-900/95 py-1 shadow-xl backdrop-blur transition-opacity ${align === "right" ? "right-0" : "left-0"}`}
           role="menu"
         >
           {items.map((item) =>
@@ -72,7 +78,7 @@ const Dropdown = ({ trigger, items, align = "right", className = "" }: DropdownP
               >
                 {item.label}
               </button>
-            )
+            ),
           )}
         </div>
       )}

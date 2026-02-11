@@ -1,6 +1,11 @@
-"use client";
-
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 interface TrafficSource {
   name: string;
@@ -8,7 +13,7 @@ interface TrafficSource {
   color: string;
 }
 
-export function TrafficPieChart({ data }: { data: TrafficSource[] }) {
+const TrafficPieChart = ({ data }: { data: TrafficSource[] }) => {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <PieChart>
@@ -32,7 +37,10 @@ export function TrafficPieChart({ data }: { data: TrafficSource[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number | undefined, name: string | undefined) => [`${value ?? 0}%`, name || ""]}
+          formatter={(value: number | undefined, name: string | undefined) => [
+            `${value ?? 0}%`,
+            name || "",
+          ]}
         />
         <Legend
           wrapperStyle={{ fontSize: "12px" }}
@@ -41,4 +49,6 @@ export function TrafficPieChart({ data }: { data: TrafficSource[] }) {
       </PieChart>
     </ResponsiveContainer>
   );
-}
+};
+
+export default TrafficPieChart;

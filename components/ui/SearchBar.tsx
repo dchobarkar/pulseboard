@@ -3,16 +3,19 @@
 import { Search } from "lucide-react";
 import { InputHTMLAttributes } from "react";
 
-interface SearchBarProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+interface SearchBarProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   placeholder?: string;
   className?: string;
 }
 
-export function SearchBar({
+const SearchBar = ({
   placeholder = "Search...",
   className = "",
   ...props
-}: SearchBarProps) {
+}: SearchBarProps) => {
   return (
     <div className={`relative ${className}`}>
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
@@ -24,4 +27,6 @@ export function SearchBar({
       />
     </div>
   );
-}
+};
+
+export default SearchBar;

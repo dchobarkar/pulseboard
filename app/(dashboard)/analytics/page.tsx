@@ -2,11 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { useState, useMemo } from "react";
-import { RefreshCw, Clock } from "lucide-react";
-import { ChartWrapper } from "@/components/ui/ChartWrapper";
+
+import ChartWrapper from "@/components/ui/ChartWrapper";
 import PageHeader from "@/components/ui/PageHeader";
-import { DateRangeFilter } from "@/components/ui/DateRangeFilter";
+import DateRangeFilter from "@/components/ui/DateRangeFilter";
 import { exportToCSV } from "@/lib/export";
+import { ANALYTICS_DATE_RANGES } from "@/data/constants";
 import {
   revenueVsExpenses,
   revenueVsExpenses7d,
@@ -21,32 +22,25 @@ import {
   retentionData7d,
   retentionData30d,
 } from "@/data/analytics";
-import { ANALYTICS_DATE_RANGES } from "@/data/constants";
 
 const RevenueVsExpensesChart = dynamic(
-  () =>
-    import("@/components/charts/RevenueVsExpensesChart").then(
-      (m) => m.RevenueVsExpensesChart
-    ),
-  { ssr: false }
+  () => import("@/components/charts/RevenueVsExpensesChart"),
+  { ssr: false },
 );
 const UserGrowthChart = dynamic(
-  () =>
-    import("@/components/charts/UserGrowthChart").then((m) => m.UserGrowthChart),
-  { ssr: false }
+  () => import("@/components/charts/UserGrowthChart"),
+  { ssr: false },
 );
 const FunnelChart = dynamic(
-  () => import("@/components/charts/FunnelChart").then((m) => m.FunnelChart),
-  { ssr: false }
+  () => import("@/components/charts/FunnelChart"),
+  { ssr: false },
 );
 const RetentionChart = dynamic(
-  () =>
-    import("@/components/charts/RetentionChart").then((m) => m.RetentionChart),
-  { ssr: false }
+  () => import("@/components/charts/RetentionChart"),
+  { ssr: false },
 );
 
-
-export default function AnalyticsPage() {
+const Page = () => {
   const [dateRange, setDateRange] = useState<string>("30d");
   const [compareMode, setCompareMode] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -91,7 +85,7 @@ export default function AnalyticsPage() {
         return revenueVsExpenses.map((item) => ({
           month: `${item.month} (Prev)`,
           revenue: Math.floor(item.revenue * 0.85),
-          expenses: Math.floor(item.expenses * 0.90),
+          expenses: Math.floor(item.expenses * 0.9),
         }));
     }
   }, [dateRange]);
@@ -119,13 +113,12 @@ export default function AnalyticsPage() {
   const comparisonRevenueData = useMemo(() => {
     if (!compareMode) return filteredRevenueVsExpenses;
     // Interleave current and previous for better comparison
-    const result: typeof filteredRevenueVsExpenses = [];
     const current = filteredRevenueVsExpenses.map((item) => ({
       ...item,
       month: `${item.month} (Current)`,
     }));
     const previous = previousRevenueVsExpenses;
-    
+
     // Combine both datasets
     return [...current, ...previous];
   }, [compareMode, filteredRevenueVsExpenses, previousRevenueVsExpenses]);
@@ -180,7 +173,7 @@ export default function AnalyticsPage() {
             })),
           ]
         : filteredRevenueVsExpenses,
-      `revenue-expenses-${dateRange}${compareMode ? "-comparison" : ""}`
+      `revenue-expenses-${dateRange}${compareMode ? "-comparison" : ""}`,
     );
   };
 
@@ -188,11 +181,17 @@ export default function AnalyticsPage() {
     exportToCSV(
       compareMode
         ? [
-            ...filteredUserGrowth.map((item) => ({ ...item, period: "Current" })),
-            ...previousUserGrowth.map((item) => ({ ...item, period: "Previous" })),
+            ...filteredUserGrowth.map((item) => ({
+              ...item,
+              period: "Current",
+            })),
+            ...previousUserGrowth.map((item) => ({
+              ...item,
+              period: "Previous",
+            })),
           ]
         : filteredUserGrowth,
-      `user-growth-${dateRange}${compareMode ? "-comparison" : ""}`
+      `user-growth-${dateRange}${compareMode ? "-comparison" : ""}`,
     );
   };
 
@@ -220,14 +219,20 @@ export default function AnalyticsPage() {
             onChange={(e) => setCompareMode(e.target.checked)}
             className="rounded border-zinc-700/60 bg-zinc-900/80 text-indigo-600 focus:ring-indigo-500"
           />
-          <span className="text-sm text-zinc-300">Compare with previous period</span>
+          <span className="text-sm text-zinc-300">
+            Compare with previous period
+          </span>
         </label>
       </div>
 
       {/* Charts */}
       <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         <ChartWrapper
-          title={compareMode ? "Revenue vs expenses (Comparison)" : "Revenue vs expenses"}
+          title={
+            compareMode
+              ? "Revenue vs expenses (Comparison)"
+              : "Revenue vs expenses"
+          }
           chartId="revenue-expenses-chart"
           onExportCSV={handleExportRevenue}
         >
@@ -252,4 +257,6 @@ export default function AnalyticsPage() {
       </div>
     </div>
   );
-}
+};
+
+export default Page;

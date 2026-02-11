@@ -1,7 +1,6 @@
-"use client";
-
 import { LucideIcon } from "lucide-react";
-import { Tooltip } from "./Tooltip";
+
+import Tooltip from "./Tooltip";
 
 interface KpiCardProps {
   label: string;
@@ -13,7 +12,7 @@ interface KpiCardProps {
   tooltip?: string;
 }
 
-export function KpiCard({
+const KpiCard = ({
   label,
   value,
   change,
@@ -21,9 +20,14 @@ export function KpiCard({
   goal,
   goalLabel,
   tooltip,
-}: KpiCardProps) {
+}: KpiCardProps) => {
   const positive = change !== undefined && change >= 0;
-  const progress = goal ? Math.min((Number(value.toString().replace(/[^0-9.]/g, "")) / goal) * 100, 100) : undefined;
+  const progress = goal
+    ? Math.min(
+        (Number(value.toString().replace(/[^0-9.]/g, "")) / goal) * 100,
+        100,
+      )
+    : undefined;
 
   return (
     <div className="glass-card transition-lift p-4 sm:p-5 transition-fade-in">
@@ -37,7 +41,9 @@ export function KpiCard({
               </Tooltip>
             )}
           </div>
-          <p className="mt-1 text-xl sm:text-2xl font-semibold tracking-tight truncate">{value}</p>
+          <p className="mt-1 text-xl sm:text-2xl font-semibold tracking-tight truncate">
+            {value}
+          </p>
           {change !== undefined && (
             <p
               className={`mt-1 text-xs sm:text-sm ${positive ? "text-emerald-400" : "text-rose-400"}`}
@@ -69,4 +75,6 @@ export function KpiCard({
       </div>
     </div>
   );
-}
+};
+
+export default KpiCard;

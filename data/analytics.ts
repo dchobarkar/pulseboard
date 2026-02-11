@@ -1,7 +1,3 @@
-/**
- * Analytics dashboard data
- */
-
 export const revenueVsExpenses = [
   { month: "Jan", revenue: 38200, expenses: 22100 },
   { month: "Feb", revenue: 40100, expenses: 23500 },

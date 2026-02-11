@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BarChart,
   Bar,
@@ -15,7 +13,7 @@ interface FunnelStep {
   count: number;
 }
 
-export function FunnelChart({ data }: { data: FunnelStep[] }) {
+const FunnelChart = ({ data }: { data: FunnelStep[] }) => {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <BarChart
@@ -43,7 +41,10 @@ export function FunnelChart({ data }: { data: FunnelStep[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number | undefined) => [(value ?? 0).toLocaleString(), "Count"]}
+          formatter={(value: number | undefined) => [
+            (value ?? 0).toLocaleString(),
+            "Count",
+          ]}
         />
         <Bar
           dataKey="count"
@@ -54,4 +55,6 @@ export function FunnelChart({ data }: { data: FunnelStep[] }) {
       </BarChart>
     </ResponsiveContainer>
   );
-}
+};
+
+export default FunnelChart;

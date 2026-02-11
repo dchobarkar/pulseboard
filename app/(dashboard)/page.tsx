@@ -10,53 +10,51 @@ import {
   Activity,
   Download,
 } from "lucide-react";
-import { KpiCard } from "@/components/ui/KpiCard";
-import { ChartWrapper } from "@/components/ui/ChartWrapper";
-import { Table } from "@/components/ui/Table";
+
+import KpiCard from "@/components/ui/KpiCard";
+import ChartWrapper from "@/components/ui/ChartWrapper";
+import Table from "@/components/ui/Table";
 import PageHeader from "@/components/ui/PageHeader";
-import { DateRangeFilter } from "@/components/ui/DateRangeFilter";
+import DateRangeFilter from "@/components/ui/DateRangeFilter";
 import Card from "@/components/ui/Card";
-import { CardHeader } from "@/components/ui/Card";
-import { WidgetToggle } from "@/components/ui/WidgetToggle";
+import WidgetToggle from "@/components/ui/WidgetToggle";
 import HiddenWidgetsPanel from "@/components/ui/HiddenWidgetsPanel";
 import { exportToCSV, exportTableToCSV } from "@/lib/export";
+import { QUICK_ACTIONS } from "@/data/navigation";
 import {
-  kpiOverview,
-  revenueChartData,
-  trafficSources,
-  recentActivity,
-  topProducts,
   overviewDataToday,
   overviewDataWeek,
   overviewDataMonth,
   overviewDataLastMonth,
   overviewDataQuarter,
 } from "@/data/overview";
-import { OVERVIEW_DATE_RANGES, WIDGET_LABELS, STORAGE_KEYS } from "@/data/constants";
-import { QUICK_ACTIONS } from "@/data/navigation";
+import {
+  OVERVIEW_DATE_RANGES,
+  WIDGET_LABELS,
+  STORAGE_KEYS,
+} from "@/data/constants";
 
 const RevenueLineChart = dynamic(
-  () => import("@/components/charts/RevenueLineChart").then((m) => m.RevenueLineChart),
-  { ssr: false }
+  () => import("@/components/charts/RevenueLineChart"),
+  { ssr: false },
 );
 const TrafficPieChart = dynamic(
-  () => import("@/components/charts/TrafficPieChart").then((m) => m.TrafficPieChart),
-  { ssr: false }
+  () => import("@/components/charts/TrafficPieChart"),
+  { ssr: false },
 );
-
 
 const OverviewPage = () => {
   const [selectedRange, setSelectedRange] = useState("month");
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hiddenWidgets, setHiddenWidgets] = useState<Set<string>>(new Set());
-  const [showHiddenWidgets, setShowHiddenWidgets] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(STORAGE_KEYS.HIDDEN_WIDGETS);
       if (saved) {
         try {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
           setHiddenWidgets(new Set(JSON.parse(saved)));
         } catch {
           // Silently fail - use default empty set
@@ -82,7 +80,10 @@ const OverviewPage = () => {
     }
     setHiddenWidgets(newHidden);
     if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEYS.HIDDEN_WIDGETS, JSON.stringify(Array.from(newHidden)));
+      localStorage.setItem(
+        STORAGE_KEYS.HIDDEN_WIDGETS,
+        JSON.stringify(Array.from(newHidden)),
+      );
     }
   };
 
@@ -111,7 +112,10 @@ const OverviewPage = () => {
   };
 
   const handleExportTraffic = () => {
-    exportToCSV(filteredData.trafficSources, `traffic-sources-${selectedRange}`);
+    exportToCSV(
+      filteredData.trafficSources,
+      `traffic-sources-${selectedRange}`,
+    );
   };
 
   const handleExportProducts = () => {
@@ -122,7 +126,7 @@ const OverviewPage = () => {
         { key: "revenue", label: "Revenue" },
         { key: "units", label: "Units" },
       ],
-      `top-products-${selectedRange}`
+      `top-products-${selectedRange}`,
     );
   };
 
@@ -132,8 +136,20 @@ const OverviewPage = () => {
       value: `$${filteredData.kpis.revenue.value.toLocaleString()}`,
       change: filteredData.kpis.revenue.change,
       icon: DollarSign,
-      goal: selectedRange === "today" ? 2000 : selectedRange === "week" ? 15000 : selectedRange === "lastMonth" ? 45000 : 50000,
-      goalLabel: selectedRange === "today" ? "Daily Goal" : selectedRange === "week" ? "Weekly Goal" : "Monthly Goal",
+      goal:
+        selectedRange === "today"
+          ? 2000
+          : selectedRange === "week"
+            ? 15000
+            : selectedRange === "lastMonth"
+              ? 45000
+              : 50000,
+      goalLabel:
+        selectedRange === "today"
+          ? "Daily Goal"
+          : selectedRange === "week"
+            ? "Weekly Goal"
+            : "Monthly Goal",
       tooltip: "Total revenue generated in the selected period",
     },
     {
@@ -141,7 +157,14 @@ const OverviewPage = () => {
       value: filteredData.kpis.activeUsers.value.toLocaleString(),
       change: filteredData.kpis.activeUsers.change,
       icon: Users,
-      goal: selectedRange === "today" ? 12500 : selectedRange === "week" ? 12500 : selectedRange === "lastMonth" ? 11000 : 15000,
+      goal:
+        selectedRange === "today"
+          ? 12500
+          : selectedRange === "week"
+            ? 12500
+            : selectedRange === "lastMonth"
+              ? 11000
+              : 15000,
       goalLabel: "Target",
       tooltip: "Number of active users in the current period",
     },
@@ -186,7 +209,10 @@ const OverviewPage = () => {
         onShowAll={() => {
           setHiddenWidgets(new Set());
           if (typeof window !== "undefined") {
-            localStorage.setItem(STORAGE_KEYS.HIDDEN_WIDGETS, JSON.stringify([]));
+            localStorage.setItem(
+              STORAGE_KEYS.HIDDEN_WIDGETS,
+              JSON.stringify([]),
+            );
           }
         }}
       />
@@ -196,7 +222,9 @@ const OverviewPage = () => {
         widgetId="quickActions"
         isHidden={hiddenWidgets.has("quickActions")}
         onToggle={toggleWidget}
-        header={<h3 className="text-sm font-medium text-zinc-300">Quick Actions</h3>}
+        header={
+          <h3 className="text-sm font-medium text-zinc-300">Quick Actions</h3>
+        }
       >
         <Card>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -224,7 +252,9 @@ const OverviewPage = () => {
         widgetId="kpis"
         isHidden={hiddenWidgets.has("kpis")}
         onToggle={toggleWidget}
-        header={<h2 className="text-sm font-medium text-zinc-300">Key Metrics</h2>}
+        header={
+          <h2 className="text-sm font-medium text-zinc-300">Key Metrics</h2>
+        }
       >
         <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {kpis.map((kpi) => (
@@ -262,7 +292,9 @@ const OverviewPage = () => {
           widgetId="trafficChart"
           isHidden={hiddenWidgets.has("trafficChart")}
           onToggle={toggleWidget}
-          header={<span className="text-xs text-zinc-500">Traffic Sources</span>}
+          header={
+            <span className="text-xs text-zinc-500">Traffic Sources</span>
+          }
         >
           <ChartWrapper
             title="Traffic sources"
@@ -280,7 +312,9 @@ const OverviewPage = () => {
           widgetId="activity"
           isHidden={hiddenWidgets.has("activity")}
           onToggle={toggleWidget}
-          header={<span className="text-xs text-zinc-500">Recent Activity</span>}
+          header={
+            <span className="text-xs text-zinc-500">Recent Activity</span>
+          }
         >
           <Card padding="lg">
             <h3 className="mb-3 sm:mb-4 flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-300">
@@ -295,10 +329,14 @@ const OverviewPage = () => {
                   title={`${a.user} - ${a.action} - ${a.time}`}
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs sm:text-sm text-zinc-200 truncate">{a.user}</p>
+                    <p className="text-xs sm:text-sm text-zinc-200 truncate">
+                      {a.user}
+                    </p>
                     <p className="text-xs text-zinc-500 truncate">{a.action}</p>
                   </div>
-                  <span className="text-xs text-zinc-500 ml-2 shrink-0">{a.time}</span>
+                  <span className="text-xs text-zinc-500 ml-2 shrink-0">
+                    {a.time}
+                  </span>
                 </li>
               ))}
             </ul>

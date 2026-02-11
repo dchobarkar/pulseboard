@@ -1,8 +1,5 @@
-/**
- * Report-related constants, configurations, and data
- */
-
 import { Download, Loader2, AlertCircle, FileText } from "lucide-react";
+
 import type { Report } from "./types";
 export type { Report };
 
@@ -14,7 +11,7 @@ export const SCHEDULE_FREQUENCIES = [
   { value: "monthly", label: "Monthly" },
 ] as const;
 
-export type DatePreset = 
+export type DatePreset =
   | { label: string; days: number }
   | { label: string; days: null; preset: "thisMonth" | "lastMonth" };
 
@@ -112,26 +109,26 @@ export const reportCategories = [
 const getDateRanges = () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
+
   const last7DaysFrom = new Date(today);
   last7DaysFrom.setDate(last7DaysFrom.getDate() - 6);
-  
+
   const last30DaysFrom = new Date(today);
   last30DaysFrom.setDate(last30DaysFrom.getDate() - 29);
-  
+
   const last90DaysFrom = new Date(today);
   last90DaysFrom.setDate(last90DaysFrom.getDate() - 89);
-  
+
   const thisMonthFrom = new Date(today.getFullYear(), today.getMonth(), 1);
-  
+
   const lastMonthFrom = new Date(today.getFullYear(), today.getMonth() - 1, 1);
   const lastMonthTo = new Date(today.getFullYear(), today.getMonth(), 0);
-  
+
   const oldDate1 = new Date(today);
   oldDate1.setDate(oldDate1.getDate() - 120);
   const oldDate2 = new Date(today);
   oldDate2.setDate(oldDate2.getDate() - 100);
-  
+
   return {
     today: today.toISOString().split("T")[0],
     last7DaysFrom: last7DaysFrom.toISOString().split("T")[0],

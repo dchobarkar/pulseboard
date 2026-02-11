@@ -1,7 +1,3 @@
-/**
- * Overview dashboard data
- */
-
 export const kpiOverview = {
   revenue: { value: 48240, change: 12.4, label: "Revenue" },
   activeUsers: { value: 12450, change: 18.2, label: "Active Users" },
@@ -114,10 +110,25 @@ export const overviewDataWeek = {
     { id: "1", user: "Alex Chen", action: "Upgraded to Pro", time: "2m ago" },
     { id: "2", user: "Sam Rivera", action: "New signup", time: "5m ago" },
     { id: "3", user: "Jordan Lee", action: "Export report", time: "12m ago" },
-    { id: "4", user: "Casey Morgan", action: "Payment received", time: "1h ago" },
-    { id: "5", user: "Riley Kim", action: "Cancelled subscription", time: "2h ago" },
+    {
+      id: "4",
+      user: "Casey Morgan",
+      action: "Payment received",
+      time: "1h ago",
+    },
+    {
+      id: "5",
+      user: "Riley Kim",
+      action: "Cancelled subscription",
+      time: "2h ago",
+    },
     { id: "6", user: "Taylor Swift", action: "New signup", time: "3h ago" },
-    { id: "7", user: "Morgan Freeman", action: "Upgraded to Enterprise", time: "5h ago" },
+    {
+      id: "7",
+      user: "Morgan Freeman",
+      action: "Upgraded to Enterprise",
+      time: "5h ago",
+    },
   ],
   topProducts: [
     { name: "API Pro", revenue: 3640, units: 91 },
@@ -163,8 +174,18 @@ export const overviewDataLastMonth = {
     { id: "1", user: "Alex Chen", action: "Payment received", time: "1d ago" },
     { id: "2", user: "Sam Rivera", action: "New signup", time: "2d ago" },
     { id: "3", user: "Jordan Lee", action: "Export report", time: "3d ago" },
-    { id: "4", user: "Casey Morgan", action: "Upgraded to Pro", time: "5d ago" },
-    { id: "5", user: "Riley Kim", action: "Cancelled subscription", time: "1w ago" },
+    {
+      id: "4",
+      user: "Casey Morgan",
+      action: "Upgraded to Pro",
+      time: "5d ago",
+    },
+    {
+      id: "5",
+      user: "Riley Kim",
+      action: "Cancelled subscription",
+      time: "1w ago",
+    },
   ],
   topProducts: [
     { name: "API Pro", revenue: 11000, units: 275 },
@@ -197,11 +218,31 @@ export const overviewDataQuarter = {
     { id: "1", user: "Alex Chen", action: "Upgraded to Pro", time: "2m ago" },
     { id: "2", user: "Sam Rivera", action: "New signup", time: "5m ago" },
     { id: "3", user: "Jordan Lee", action: "Export report", time: "12m ago" },
-    { id: "4", user: "Casey Morgan", action: "Payment received", time: "18m ago" },
-    { id: "5", user: "Riley Kim", action: "Cancelled subscription", time: "24m ago" },
+    {
+      id: "4",
+      user: "Casey Morgan",
+      action: "Payment received",
+      time: "18m ago",
+    },
+    {
+      id: "5",
+      user: "Riley Kim",
+      action: "Cancelled subscription",
+      time: "24m ago",
+    },
     { id: "6", user: "Taylor Swift", action: "New signup", time: "2h ago" },
-    { id: "7", user: "Morgan Freeman", action: "Upgraded to Enterprise", time: "1d ago" },
-    { id: "8", user: "Emma Watson", action: "Payment received", time: "3d ago" },
+    {
+      id: "7",
+      user: "Morgan Freeman",
+      action: "Upgraded to Enterprise",
+      time: "1d ago",
+    },
+    {
+      id: "8",
+      user: "Emma Watson",
+      action: "Payment received",
+      time: "3d ago",
+    },
   ],
   topProducts: [
     { name: "API Pro", revenue: 36200, units: 905 },

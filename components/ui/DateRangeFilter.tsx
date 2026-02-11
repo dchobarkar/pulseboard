@@ -1,5 +1,3 @@
-"use client";
-
 interface DateRangeOption {
   label: string;
   value: string;
@@ -12,12 +10,12 @@ interface DateRangeFilterProps {
   className?: string;
 }
 
-export function DateRangeFilter({
+const DateRangeFilter = ({
   options,
   selectedValue,
   onChange,
   className = "",
-}: DateRangeFilterProps) {
+}: DateRangeFilterProps) => {
   return (
     <div className={`flex flex-wrap items-center gap-2 ${className}`}>
       {options.map((option) => (
@@ -36,4 +34,6 @@ export function DateRangeFilter({
       ))}
     </div>
   );
-}
+};
+
+export default DateRangeFilter;

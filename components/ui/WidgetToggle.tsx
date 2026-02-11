@@ -1,5 +1,3 @@
-"use client";
-
 import { ReactNode } from "react";
 
 interface WidgetToggleProps {
@@ -11,14 +9,14 @@ interface WidgetToggleProps {
   className?: string;
 }
 
-export function WidgetToggle({
+const WidgetToggle = ({
   widgetId,
   isHidden,
   onToggle,
   children,
   header,
   className = "",
-}: WidgetToggleProps) {
+}: WidgetToggleProps) => {
   if (isHidden) return null;
 
   return (
@@ -38,4 +36,6 @@ export function WidgetToggle({
       {children}
     </div>
   );
-}
+};
+
+export default WidgetToggle;

@@ -1,7 +1,3 @@
-/**
- * Export utilities for charts and tables
- */
-
 interface CSVRow {
   [key: string]: string | number | boolean | null | undefined;
 }
@@ -20,7 +16,7 @@ const exportToCSV = (data: CSVRow[], filename: string): void => {
             ? `"${value}"`
             : value;
         })
-        .join(",")
+        .join(","),
     ),
   ].join("\n");
 
@@ -82,19 +78,22 @@ const exportChartAsPNG = (chartId: string, filename: string): void => {
 const exportTableToCSV = <T extends Record<string, unknown>>(
   data: T[],
   columns: Array<{ key: string; label: string }>,
-  filename: string
+  filename: string,
 ): void => {
   if (typeof document === "undefined") return;
-  
+
   const headers = columns.map((col) => col.label);
   const rows = data.map((row) =>
     columns.map((col) => {
       const value = row[col.key];
       return value !== null && value !== undefined ? String(value) : "";
-    })
+    }),
   );
 
-  const csvContent = [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
+  const csvContent = [
+    headers.join(","),
+    ...rows.map((row) => row.join(",")),
+  ].join("\n");
 
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");

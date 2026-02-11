@@ -2,30 +2,21 @@
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { ChartWrapper } from "@/components/ui/ChartWrapper";
-import { Table } from "@/components/ui/Table";
+import { Plus, DollarSign, MoreVertical, Download, Edit2 } from "lucide-react";
+
+import ChartWrapper from "@/components/ui/ChartWrapper";
+import Table from "@/components/ui/Table";
 import Badge from "@/components/ui/Badge";
-import { KpiCard } from "@/components/ui/KpiCard";
+import KpiCard from "@/components/ui/KpiCard";
 import Modal from "@/components/ui/Modal";
 import Dropdown from "@/components/ui/Dropdown";
 import PageHeader from "@/components/ui/PageHeader";
-import { SearchBar } from "@/components/ui/SearchBar";
+import SearchBar from "@/components/ui/SearchBar";
 import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { CardHeader } from "@/components/ui/Card";
-import {
-  Plus,
-  DollarSign,
-  Search,
-  MoreVertical,
-  Download,
-  Eye,
-  Edit2,
-  Trash2,
-  CheckCircle2,
-  AlertCircle,
-} from "lucide-react";
+import { kpiOverview } from "@/data/overview";
 import {
   mrrChartData,
   planDistribution,
@@ -36,19 +27,17 @@ import {
   type Invoice,
   type InvoiceStatus,
 } from "@/data/billing";
-import { kpiOverview } from "@/data/overview";
 
 const MrrChart = dynamic(
-  () => import("@/components/charts/MrrChart").then((m) => m.MrrChart),
-  { ssr: false }
+  () => import("@/components/charts/MrrChart"),
+  { ssr: false },
 );
 const PlanPieChart = dynamic(
-  () => import("@/components/charts/PlanPieChart").then((m) => m.PlanPieChart),
-  { ssr: false }
+  () => import("@/components/charts/PlanPieChart"),
+  { ssr: false },
 );
 
-
-const BillingPage = () => {
+const Page = () => {
   const [invoices, setInvoices] = useState<Invoice[]>(invoicesData);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<InvoiceStatus | "">("");
@@ -84,7 +73,7 @@ const BillingPage = () => {
     setFormData({
       date: new Date().toISOString().split("T")[0],
       amount: "",
-      plan: PLANS[1] as typeof PLANS[number],
+      plan: PLANS[1] as (typeof PLANS)[number],
       status: "pending",
     });
     setIsAddModalOpen(true);
@@ -119,26 +108,28 @@ const BillingPage = () => {
         id: `INV-${Date.now().toString().slice(-6)}`,
         date: formData.date,
         amount: Number(formData.amount),
-        plan: formData.plan as typeof PLANS[number],
+        plan: formData.plan as (typeof PLANS)[number],
         status: formData.status,
       };
-      setInvoices([...invoices, newInvoice].sort((a, b) => 
-        new Date(b.date).getTime() - new Date(a.date).getTime()
-      ));
+      setInvoices(
+        [...invoices, newInvoice].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        ),
+      );
       setIsAddModalOpen(false);
     } else if (isEditModalOpen && selectedInvoice) {
       setInvoices(
         invoices.map((inv) =>
-            inv.id === selectedInvoice.id
-              ? {
-                  ...inv,
-                  date: formData.date,
-                  amount: Number(formData.amount),
-                  plan: formData.plan as typeof PLANS[number],
-                  status: formData.status,
-                }
-            : inv
-        )
+          inv.id === selectedInvoice.id
+            ? {
+                ...inv,
+                date: formData.date,
+                amount: Number(formData.amount),
+                plan: formData.plan as (typeof PLANS)[number],
+                status: formData.status,
+              }
+            : inv,
+        ),
       );
       setIsEditModalOpen(false);
       setSelectedInvoice(null);
@@ -146,7 +137,7 @@ const BillingPage = () => {
     setFormData({
       date: new Date().toISOString().split("T")[0],
       amount: "",
-      plan: PLANS[1] as typeof PLANS[number],
+      plan: PLANS[1] as (typeof PLANS)[number],
       status: "pending",
     });
   };
@@ -162,11 +153,10 @@ const BillingPage = () => {
   const handleStatusUpdate = (invoice: Invoice, newStatus: InvoiceStatus) => {
     setInvoices(
       invoices.map((inv) =>
-        inv.id === invoice.id ? { ...inv, status: newStatus } : inv
-      )
+        inv.id === invoice.id ? { ...inv, status: newStatus } : inv,
+      ),
     );
   };
-
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -290,15 +280,17 @@ const BillingPage = () => {
           keyExtractor={(r) => r.id}
           emptyState={{
             title: "No invoices found",
-            description: filtered.length === 0 && search
-              ? "Try adjusting your search or filters"
-              : "Get started by creating your first invoice",
-            action: filtered.length === 0 && !search
-              ? {
-                  label: "Add Invoice",
-                  onClick: handleAddInvoice,
-                }
-              : undefined,
+            description:
+              filtered.length === 0 && search
+                ? "Try adjusting your search or filters"
+                : "Get started by creating your first invoice",
+            action:
+              filtered.length === 0 && !search
+                ? {
+                    label: "Add Invoice",
+                    onClick: handleAddInvoice,
+                  }
+                : undefined,
           }}
         />
       </Card>
@@ -311,20 +303,28 @@ const BillingPage = () => {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm text-zinc-400">Invoice Date</label>
+            <label className="mb-1 block text-sm text-zinc-400">
+              Invoice Date
+            </label>
             <input
               type="date"
               value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, date: e.target.value })
+              }
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-zinc-400">Amount ($)</label>
+            <label className="mb-1 block text-sm text-zinc-400">
+              Amount ($)
+            </label>
             <input
               type="number"
               value={formData.amount}
-              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, amount: e.target.value })
+              }
               placeholder="299"
               min="0"
               step="0.01"
@@ -336,7 +336,9 @@ const BillingPage = () => {
               <label className="mb-1 block text-sm text-zinc-400">Plan</label>
               <select
                 value={formData.plan}
-                onChange={(e) => setFormData({ ...formData, plan: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, plan: e.target.value })
+                }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
                 {PLANS.map((plan) => (
@@ -351,7 +353,10 @@ const BillingPage = () => {
               <select
                 value={formData.status}
                 onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value as InvoiceStatus })
+                  setFormData({
+                    ...formData,
+                    status: e.target.value as InvoiceStatus,
+                  })
                 }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
@@ -392,7 +397,9 @@ const BillingPage = () => {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm text-zinc-400">Invoice ID</label>
+            <label className="mb-1 block text-sm text-zinc-400">
+              Invoice ID
+            </label>
             <input
               type="text"
               value={selectedInvoice?.id || ""}
@@ -401,20 +408,28 @@ const BillingPage = () => {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-zinc-400">Invoice Date</label>
+            <label className="mb-1 block text-sm text-zinc-400">
+              Invoice Date
+            </label>
             <input
               type="date"
               value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, date: e.target.value })
+              }
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-zinc-400">Amount ($)</label>
+            <label className="mb-1 block text-sm text-zinc-400">
+              Amount ($)
+            </label>
             <input
               type="number"
               value={formData.amount}
-              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, amount: e.target.value })
+              }
               min="0"
               step="0.01"
               className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
@@ -425,7 +440,9 @@ const BillingPage = () => {
               <label className="mb-1 block text-sm text-zinc-400">Plan</label>
               <select
                 value={formData.plan}
-                onChange={(e) => setFormData({ ...formData, plan: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, plan: e.target.value })
+                }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
                 {PLANS.map((plan) => (
@@ -440,7 +457,10 @@ const BillingPage = () => {
               <select
                 value={formData.status}
                 onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value as InvoiceStatus })
+                  setFormData({
+                    ...formData,
+                    status: e.target.value as InvoiceStatus,
+                  })
                 }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
@@ -507,7 +527,9 @@ const BillingPage = () => {
                 <div>
                   <p className="text-xs text-zinc-500">Status</p>
                   <div className="mt-1">
-                    <Badge variant={INVOICE_STATUS_VARIANT[selectedInvoice.status]}>
+                    <Badge
+                      variant={INVOICE_STATUS_VARIANT[selectedInvoice.status]}
+                    >
                       {selectedInvoice.status}
                     </Badge>
                   </div>
@@ -586,4 +608,4 @@ const BillingPage = () => {
   );
 };
 
-export default BillingPage;
+export default Page;

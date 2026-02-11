@@ -1,5 +1,3 @@
-"use client";
-
 import {
   LineChart,
   Line,
@@ -17,7 +15,7 @@ interface DataPoint {
   expenses: number;
 }
 
-export function RevenueVsExpensesChart({ data }: { data: DataPoint[] }) {
+const RevenueVsExpensesChart = ({ data }: { data: DataPoint[] }) => {
   return (
     <ResponsiveContainer width="100%" height={240}>
       <LineChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
@@ -71,4 +69,6 @@ export function RevenueVsExpensesChart({ data }: { data: DataPoint[] }) {
       </LineChart>
     </ResponsiveContainer>
   );
-}
+};
+
+export default RevenueVsExpensesChart;

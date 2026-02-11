@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Bell, X, CheckCircle2, AlertCircle, Info, CreditCard, Users, FileText, TrendingUp } from "lucide-react";
-import type { Notification } from "@/data/types";
+import { Bell, X } from "lucide-react";
 
 import { NOTIFICATION_ICONS, NOTIFICATION_COLORS } from "@/data/notifications";
+import type { Notification } from "@/data/types";
 
 interface NotificationsDropdownProps {
   notifications: Notification[];
@@ -14,12 +14,12 @@ interface NotificationsDropdownProps {
   align?: "left" | "right";
 }
 
-export function NotificationsDropdown({
+const NotificationsDropdown = ({
   notifications,
   onDismiss,
   onMarkAllRead,
   align = "right",
-}: NotificationsDropdownProps) {
+}: NotificationsDropdownProps) => {
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -78,7 +78,7 @@ export function NotificationsDropdown({
           </button>
         )}
       </div>
-      <div className="max-h-[400px] overflow-y-auto">
+      <div className="max-h-100 overflow-y-auto">
         {notifications.length === 0 ? (
           <div className="px-4 py-8 text-center">
             <Bell className="mx-auto h-8 w-8 text-zinc-600 mb-2" />
@@ -107,7 +107,9 @@ export function NotificationsDropdown({
                       <p className="mt-0.5 text-xs text-zinc-400 line-clamp-2">
                         {notification.message}
                       </p>
-                      <p className="mt-1 text-xs text-zinc-500">{notification.time}</p>
+                      <p className="mt-1 text-xs text-zinc-500">
+                        {notification.time}
+                      </p>
                     </div>
                     <button
                       type="button"
@@ -152,7 +154,10 @@ export function NotificationsDropdown({
           )}
         </button>
       </div>
-      {typeof window !== "undefined" && createPortal(dropdownContent, document.body)}
+      {typeof window !== "undefined" &&
+        createPortal(dropdownContent, document.body)}
     </>
   );
-}
+};
+
+export default NotificationsDropdown;

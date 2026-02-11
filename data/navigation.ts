@@ -1,7 +1,3 @@
-/**
- * Navigation-related constants and configurations
- */
-
 import {
   LayoutDashboard,
   BarChart3,
@@ -24,8 +20,18 @@ export const NAV_ITEMS = [
 
 export const QUICK_ACTIONS = [
   { label: "Add User", icon: UserPlus, href: "/users", action: "add" },
-  { label: "Generate Report", icon: FileTextIcon, href: "/reports", action: "generate" },
-  { label: "View Analytics", icon: BarChart3, href: "/analytics", action: "view" },
+  {
+    label: "Generate Report",
+    icon: FileTextIcon,
+    href: "/reports",
+    action: "generate",
+  },
+  {
+    label: "View Analytics",
+    icon: BarChart3,
+    href: "/analytics",
+    action: "view",
+  },
 ] as const;
 
 export const USER_MENU_ITEMS = [

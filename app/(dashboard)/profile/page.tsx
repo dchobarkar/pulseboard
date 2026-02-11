@@ -2,13 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { User, Mail, Calendar, Building2, MapPin, Settings } from "lucide-react";
+import {
+  User,
+  Mail,
+  Calendar,
+  Building2,
+  MapPin,
+  Settings,
+} from "lucide-react";
+
 import Badge from "@/components/ui/Badge";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { DEFAULT_PROFILE, type ProfileData } from "@/data/settings";
 import { STORAGE_KEYS } from "@/data/constants";
 
-export default function ProfilePage() {
+const Page = () => {
   const router = useRouter();
   const [profile, setProfile] = useState<ProfileData>(DEFAULT_PROFILE);
 
@@ -19,6 +27,7 @@ export default function ProfilePage() {
         try {
           const parsed = JSON.parse(saved);
           if (parsed.profile) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setProfile((prev) => ({
               ...prev,
               displayName: parsed.profile.displayName || prev.displayName,
@@ -43,7 +52,9 @@ export default function ProfilePage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex-1">
           <Breadcrumbs />
-          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">Profile</h1>
+          <h1 className="mt-2 text-xl sm:text-2xl font-semibold text-white">
+            Profile
+          </h1>
           <p className="mt-1 text-xs sm:text-sm text-zinc-400">
             View and manage your profile information
           </p>
@@ -70,7 +81,9 @@ export default function ProfilePage() {
                 Active
               </Badge>
             </div>
-            <h2 className="text-xl font-semibold text-white">{profile.displayName}</h2>
+            <h2 className="text-xl font-semibold text-white">
+              {profile.displayName}
+            </h2>
             <p className="mt-1 text-sm text-zinc-400">{profile.email}</p>
             <Badge variant="info" className="mt-3">
               Administrator
@@ -80,7 +93,9 @@ export default function ProfilePage() {
 
         {/* Details Card */}
         <div className="lg:col-span-2 glass-card transition-fade-in p-4 sm:p-6">
-          <h3 className="text-lg font-medium text-white mb-4">Personal Information</h3>
+          <h3 className="text-lg font-medium text-white mb-4">
+            Personal Information
+          </h3>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <div className="rounded-lg bg-white/5 p-2 mt-0.5">
@@ -88,7 +103,9 @@ export default function ProfilePage() {
               </div>
               <div className="flex-1">
                 <p className="text-xs text-zinc-500">Full Name</p>
-                <p className="text-sm text-zinc-200 mt-0.5">{profile.displayName}</p>
+                <p className="text-sm text-zinc-200 mt-0.5">
+                  {profile.displayName}
+                </p>
               </div>
             </div>
 
@@ -108,7 +125,9 @@ export default function ProfilePage() {
               </div>
               <div className="flex-1">
                 <p className="text-xs text-zinc-500">Organization</p>
-                <p className="text-sm text-zinc-200 mt-0.5">{profile.organization}</p>
+                <p className="text-sm text-zinc-200 mt-0.5">
+                  {profile.organization}
+                </p>
               </div>
             </div>
 
@@ -118,7 +137,9 @@ export default function ProfilePage() {
               </div>
               <div className="flex-1">
                 <p className="text-xs text-zinc-500">Location</p>
-                <p className="text-sm text-zinc-200 mt-0.5">{profile.location}</p>
+                <p className="text-sm text-zinc-200 mt-0.5">
+                  {profile.location}
+                </p>
               </div>
             </div>
 
@@ -128,7 +149,9 @@ export default function ProfilePage() {
               </div>
               <div className="flex-1">
                 <p className="text-xs text-zinc-500">Member Since</p>
-                <p className="text-sm text-zinc-200 mt-0.5">{profile.memberSince}</p>
+                <p className="text-sm text-zinc-200 mt-0.5">
+                  {profile.memberSince}
+                </p>
               </div>
             </div>
           </div>
@@ -147,7 +170,9 @@ export default function ProfilePage() {
 
       {/* Activity Summary */}
       <div className="glass-card transition-fade-in p-4 sm:p-6">
-        <h3 className="text-lg font-medium text-white mb-4">Activity Summary</h3>
+        <h3 className="text-lg font-medium text-white mb-4">
+          Activity Summary
+        </h3>
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <p className="text-xs text-zinc-500">Total Logins</p>
@@ -165,4 +190,6 @@ export default function ProfilePage() {
       </div>
     </div>
   );
-}
+};
+
+export default Page;
