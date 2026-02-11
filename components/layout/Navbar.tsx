@@ -3,12 +3,14 @@
 import { Search, Bell, Sun, Moon, User, Menu } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {
   onMenuClick?: () => void;
 }
 
 export function Navbar({ onMenuClick }: NavbarProps) {
+  const router = useRouter();
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme") as "dark" | "light" | null;
@@ -27,10 +29,14 @@ export function Navbar({ onMenuClick }: NavbarProps) {
     }
   }, [theme]);
 
+  const handleLogout = () => {
+    router.push("/logout");
+  };
+
   const userMenuItems = [
-    { label: "Profile", onClick: () => {} },
-    { label: "Preferences", onClick: () => {} },
-    { label: "Logout", onClick: () => {} },
+    { label: "Profile", href: "/profile" },
+    { label: "Preferences", href: "/settings?tab=preferences" },
+    { label: "Logout", onClick: handleLogout },
   ];
 
   return (

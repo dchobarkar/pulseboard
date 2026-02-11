@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface DropdownItem {
   label: string;
@@ -16,6 +17,7 @@ interface DropdownProps {
 }
 
 export function Dropdown({ trigger, items, align = "right", className = "" }: DropdownProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -45,14 +47,18 @@ export function Dropdown({ trigger, items, align = "right", className = "" }: Dr
         >
           {items.map((item) =>
             item.href ? (
-              <a
+              <button
                 key={item.label}
-                href={item.href}
-                className="block px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
+                type="button"
+                onClick={() => {
+                  router.push(item.href!);
+                  setOpen(false);
+                }}
+                className="block w-full px-4 py-2 text-left text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
                 role="menuitem"
               >
                 {item.label}
-              </a>
+              </button>
             ) : (
               <button
                 key={item.label}
