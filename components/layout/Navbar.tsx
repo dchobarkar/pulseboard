@@ -29,7 +29,37 @@ export function Navbar({ onMenuClick }: NavbarProps) {
     root.classList.add(theme);
     if (typeof window !== "undefined") {
       localStorage.setItem("theme", theme);
+      // Dispatch custom event for same-tab sync
+      window.dispatchEvent(new Event("themechange"));
     }
+  }, [theme]);
+
+  // Listen for theme changes from settings page
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = localStorage.getItem("theme") as "dark" | "light" | null;
+      if (currentTheme && currentTheme !== theme) {
+        setTheme(currentTheme);
+      }
+    };
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "theme" && e.newValue) {
+        setTheme(e.newValue as "dark" | "light");
+      }
+    };
+
+    window.addEventListener("themechange", handleThemeChange);
+    window.addEventListener("storage", handleStorageChange);
+    
+    // Check for theme changes periodically (since same-tab localStorage changes don't trigger storage event)
+    const interval = setInterval(handleThemeChange, 100);
+
+    return () => {
+      window.removeEventListener("themechange", handleThemeChange);
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
   }, [theme]);
 
   const handleLogout = () => {
