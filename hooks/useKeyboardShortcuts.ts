@@ -3,7 +3,11 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
-export function useKeyboardShortcuts() {
+interface UseKeyboardShortcutsOptions {
+  onShowShortcuts?: () => void;
+}
+
+export function useKeyboardShortcuts(options?: UseKeyboardShortcutsOptions) {
   const router = useRouter();
   const gKeyPressedRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -94,14 +98,7 @@ export function useKeyboardShortcuts() {
       // ? for help (show shortcuts)
       if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
-        // Could show a modal with shortcuts
-        // Keyboard shortcuts available:
-        // / or Cmd/Ctrl + K - Focus search
-        // G + U - Navigate to Users
-        // G + A - Navigate to Analytics
-        // G + B - Navigate to Billing
-        // G + R - Navigate to Reports
-        // G + S - Navigate to Settings
+        options?.onShowShortcuts?.();
         return;
       }
     };
@@ -113,5 +110,5 @@ export function useKeyboardShortcuts() {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [router]);
+  }, [router, options]);
 }

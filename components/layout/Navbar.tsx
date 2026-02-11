@@ -3,6 +3,7 @@
 import { Search, Sun, Moon, User, Menu } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { NotificationsDropdown } from "@/components/ui/NotificationsDropdown";
+import { KeyboardShortcutsDropdown } from "@/components/ui/KeyboardShortcutsModal";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { initialNotifications, type Notification } from "@/data/notifications";
@@ -10,9 +11,10 @@ import { STORAGE_KEYS } from "@/data/constants";
 
 interface NavbarProps {
   onMenuClick?: () => void;
+  onShowShortcuts?: () => void;
 }
 
-export function Navbar({ onMenuClick }: NavbarProps) {
+export function Navbar({ onMenuClick, onShowShortcuts }: NavbarProps) {
   const router = useRouter();
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
@@ -97,7 +99,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
           <input
             type="search"
-            placeholder="Search..."
+            placeholder="Search... (Press / or ⌘K)"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 py-2 pl-9 pr-4 text-sm text-zinc-200 placeholder-zinc-500 focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/30"
@@ -106,6 +108,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
+        <KeyboardShortcutsDropdown align="right" />
         {/* Alert Indicator */}
         <button
           type="button"
