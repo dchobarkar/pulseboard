@@ -3,15 +3,14 @@
 import { ChevronRight, Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ROUTE_LABELS } from "@/data/constants";
 
 interface BreadcrumbItem {
   label: string;
   href?: string;
 }
 
-import { ROUTE_LABELS } from "@/data/constants";
-
-export function Breadcrumbs() {
+const Breadcrumbs = () => {
   const pathname = usePathname();
   const paths = pathname.split("/").filter(Boolean);
   
@@ -51,4 +50,6 @@ export function Breadcrumbs() {
       ))}
     </nav>
   );
-}
+};
+
+export default Breadcrumbs;

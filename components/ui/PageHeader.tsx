@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { RefreshCw, Clock } from "lucide-react";
-import { Breadcrumbs } from "./Breadcrumbs";
+import Breadcrumbs from "./Breadcrumbs";
 
 interface PageHeaderProps {
   title: string;
@@ -13,14 +13,14 @@ interface PageHeaderProps {
   actions?: ReactNode;
 }
 
-export function PageHeader({
+const PageHeader = ({
   title,
   description,
   lastUpdated,
   isRefreshing = false,
   onRefresh,
   actions,
-}: PageHeaderProps) {
+}: PageHeaderProps) => {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex-1">
@@ -52,4 +52,6 @@ export function PageHeader({
       </div>
     </div>
   );
-}
+};
+
+export default PageHeader;

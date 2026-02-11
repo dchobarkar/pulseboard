@@ -16,7 +16,7 @@ interface DropdownProps {
   className?: string;
 }
 
-export function Dropdown({ trigger, items, align = "right", className = "" }: DropdownProps) {
+const Dropdown = ({ trigger, items, align = "right", className = "" }: DropdownProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -78,4 +78,6 @@ export function Dropdown({ trigger, items, align = "right", className = "" }: Dr
       )}
     </div>
   );
-}
+};
+
+export default Dropdown;

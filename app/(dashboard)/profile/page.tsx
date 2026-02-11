@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User, Mail, Calendar, Building2, MapPin, Settings } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import Badge from "@/components/ui/Badge";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { DEFAULT_PROFILE, type ProfileData } from "@/data/settings";
 import { STORAGE_KEYS } from "@/data/constants";
 

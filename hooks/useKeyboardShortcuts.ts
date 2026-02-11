@@ -7,7 +7,7 @@ interface UseKeyboardShortcutsOptions {
   onShowShortcuts?: () => void;
 }
 
-export function useKeyboardShortcuts(options?: UseKeyboardShortcutsOptions) {
+const useKeyboardShortcuts = (options?: UseKeyboardShortcutsOptions) => {
   const router = useRouter();
   const gKeyPressedRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -111,4 +111,6 @@ export function useKeyboardShortcuts(options?: UseKeyboardShortcutsOptions) {
       }
     };
   }, [router, options]);
-}
+};
+
+export default useKeyboardShortcuts;

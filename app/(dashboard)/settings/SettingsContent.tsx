@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { User, Building2, Bell, Shield, Settings as SettingsIcon, ExternalLink } from "lucide-react";
 import { Sun, Moon } from "lucide-react";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { DEFAULT_SETTINGS, type SettingsData, SETTINGS_TABS } from "@/data/settings";
 import { STORAGE_KEYS } from "@/data/constants";
 

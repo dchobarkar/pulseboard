@@ -30,14 +30,15 @@ import {
   type Report,
   type DatePreset,
 } from "@/data/reports";
-import { Modal } from "@/components/ui/Modal";
-import { Dropdown } from "@/components/ui/Dropdown";
-import { Badge } from "@/components/ui/Badge";
-import { PageHeader } from "@/components/ui/PageHeader";
+import Modal from "@/components/ui/Modal";
+import Dropdown from "@/components/ui/Dropdown";
+import Badge from "@/components/ui/Badge";
+import PageHeader from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
-import { Button } from "@/components/ui/Button";
-import { Card, CardHeader } from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import { CardHeader } from "@/components/ui/Card";
 import { FormField, Input, Select, Textarea } from "@/components/ui/FormField";
 import { EmptyState } from "@/components/ui/EmptyState";
 

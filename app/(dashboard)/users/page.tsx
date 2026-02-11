@@ -3,14 +3,14 @@
 import { useState, useMemo } from "react";
 import { Search, Plus, Edit2, Trash2, MoreVertical } from "lucide-react";
 import { Table } from "@/components/ui/Table";
-import { Badge } from "@/components/ui/Badge";
-import { Modal } from "@/components/ui/Modal";
-import { Dropdown } from "@/components/ui/Dropdown";
-import { PageHeader } from "@/components/ui/PageHeader";
+import Badge from "@/components/ui/Badge";
+import Modal from "@/components/ui/Modal";
+import Dropdown from "@/components/ui/Dropdown";
+import PageHeader from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
 import {
   usersData,
   type User,

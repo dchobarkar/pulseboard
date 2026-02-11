@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, Sun, Moon, User, Menu } from "lucide-react";
-import { Dropdown } from "@/components/ui/Dropdown";
+import Dropdown from "@/components/ui/Dropdown";
 import { NotificationsDropdown } from "@/components/ui/NotificationsDropdown";
 import { KeyboardShortcutsDropdown } from "@/components/ui/KeyboardShortcutsModal";
 import { useState, useEffect } from "react";

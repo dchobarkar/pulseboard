@@ -13,11 +13,12 @@ import {
 import { KpiCard } from "@/components/ui/KpiCard";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
 import { Table } from "@/components/ui/Table";
-import { PageHeader } from "@/components/ui/PageHeader";
+import PageHeader from "@/components/ui/PageHeader";
 import { DateRangeFilter } from "@/components/ui/DateRangeFilter";
-import { Card, CardHeader } from "@/components/ui/Card";
+import Card from "@/components/ui/Card";
+import { CardHeader } from "@/components/ui/Card";
 import { WidgetToggle } from "@/components/ui/WidgetToggle";
-import { HiddenWidgetsPanel } from "@/components/ui/HiddenWidgetsPanel";
+import HiddenWidgetsPanel from "@/components/ui/HiddenWidgetsPanel";
 import { exportToCSV, exportTableToCSV } from "@/lib/export";
 import {
   kpiOverview,
@@ -31,7 +32,8 @@ import {
   overviewDataLastMonth,
   overviewDataQuarter,
 } from "@/data/overview";
-import { OVERVIEW_DATE_RANGES, QUICK_ACTIONS, WIDGET_LABELS, STORAGE_KEYS } from "@/data";
+import { OVERVIEW_DATE_RANGES, WIDGET_LABELS, STORAGE_KEYS } from "@/data/constants";
+import { QUICK_ACTIONS } from "@/data/navigation";
 
 const RevenueLineChart = dynamic(
   () => import("@/components/charts/RevenueLineChart").then((m) => m.RevenueLineChart),
@@ -43,7 +45,7 @@ const TrafficPieChart = dynamic(
 );
 
 
-export default function OverviewPage() {
+const OverviewPage = () => {
   const [selectedRange, setSelectedRange] = useState("month");
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -348,4 +350,6 @@ export default function OverviewPage() {
       </div>
     </div>
   );
-}
+};
+
+export default OverviewPage;

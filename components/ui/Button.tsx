@@ -12,7 +12,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
-export function Button({
+const Button = ({
   variant = "primary",
   size = "md",
   icon: Icon,
@@ -20,7 +20,7 @@ export function Button({
   children,
   className = "",
   ...props
-}: ButtonProps) {
+}: ButtonProps) => {
   const baseStyles = "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variantStyles = {
@@ -52,4 +52,6 @@ export function Button({
       {Icon && iconPosition === "right" && <Icon className={iconSize[size]} />}
     </button>
   );
-}
+};
+
+export default Button;

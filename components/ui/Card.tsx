@@ -8,7 +8,7 @@ interface CardProps {
   padding?: "sm" | "md" | "lg";
 }
 
-export function Card({ children, className = "", padding = "md" }: CardProps) {
+const Card = ({ children, className = "", padding = "md" }: CardProps) => {
   const paddingStyles = {
     sm: "p-3",
     md: "p-4",
@@ -20,7 +20,7 @@ export function Card({ children, className = "", padding = "md" }: CardProps) {
       {children}
     </div>
   );
-}
+};
 
 interface CardHeaderProps {
   title: string;
@@ -29,12 +29,12 @@ interface CardHeaderProps {
   className?: string;
 }
 
-export function CardHeader({
+const CardHeader = ({
   title,
   description,
   actions,
   className = "",
-}: CardHeaderProps) {
+}: CardHeaderProps) => {
   return (
     <div className={`flex items-start justify-between mb-4 ${className}`}>
       <div className="flex-1">
@@ -46,4 +46,7 @@ export function CardHeader({
       {actions && <div className="ml-4">{actions}</div>}
     </div>
   );
-}
+};
+
+export default Card;
+export { CardHeader };

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { Navbar } from "./Navbar";
-import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import useKeyboardShortcuts from "@/hooks/useKeyboardShortcuts";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

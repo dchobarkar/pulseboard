@@ -14,11 +14,11 @@ interface BadgeProps {
   className?: string;
 }
 
-export function Badge({
+const Badge = ({
   children,
   variant = "default",
   className = "",
-}: BadgeProps) {
+}: BadgeProps) => {
   return (
     <span
       className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium ${variantStyles[variant]} ${className}`}
@@ -26,4 +26,6 @@ export function Badge({
       {children}
     </span>
   );
-}
+};
+
+export default Badge;

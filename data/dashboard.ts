@@ -11,9 +11,16 @@
  * - data/constants.ts for general constants
  * - data/navigation.ts for navigation items
  * - data/settings.ts for settings data
- * 
- * All exports are re-exported from data/index.ts for convenience.
  */
 
 // Re-export everything from organized files for backward compatibility
-export * from "./index";
+export * from "./types";
+export * from "./constants";
+export * from "./overview";
+export * from "./analytics";
+export * from "./users";
+export * from "./billing";
+export * from "./reports";
+export * from "./notifications";
+export * from "./navigation";
+export * from "./settings";

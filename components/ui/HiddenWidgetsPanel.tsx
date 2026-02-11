@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Eye, ChevronDown, ChevronUp } from "lucide-react";
-import { Card } from "./Card";
-import { Button } from "./Button";
+import Card from "./Card";
+import Button from "./Button";
 
 interface HiddenWidget {
   id: string;
@@ -17,12 +17,12 @@ interface HiddenWidgetsPanelProps {
   onShowAll?: () => void;
 }
 
-export function HiddenWidgetsPanel({
+const HiddenWidgetsPanel = ({
   hiddenWidgets,
   widgetLabels,
   onShowWidget,
   onShowAll,
-}: HiddenWidgetsPanelProps) {
+}: HiddenWidgetsPanelProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (hiddenWidgets.size === 0) return null;
@@ -89,4 +89,6 @@ export function HiddenWidgetsPanel({
       )}
     </Card>
   );
-}
+};
+
+export default HiddenWidgetsPanel;

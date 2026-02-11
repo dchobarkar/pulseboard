@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useState, useMemo } from "react";
 import { RefreshCw, Clock } from "lucide-react";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
-import { PageHeader } from "@/components/ui/PageHeader";
+import PageHeader from "@/components/ui/PageHeader";
 import { DateRangeFilter } from "@/components/ui/DateRangeFilter";
 import { exportToCSV } from "@/lib/export";
 import {

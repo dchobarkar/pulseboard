@@ -10,7 +10,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-export function Modal({ open, onClose, title, children }: ModalProps) {
+const Modal = ({ open, onClose, title, children }: ModalProps) => {
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     return () => {
@@ -53,4 +53,6 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       </div>
     </div>
   );
-}
+};
+
+export default Modal;

@@ -2,7 +2,7 @@
  * Export utilities for charts and tables
  */
 
-export function exportToCSV(data: any[], filename: string) {
+const exportToCSV = (data: any[], filename: string) => {
   if (!data || data.length === 0) return;
 
   const headers = Object.keys(data[0]);
@@ -29,9 +29,9 @@ export function exportToCSV(data: any[], filename: string) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-}
+};
 
-export function exportChartAsPNG(chartId: string, filename: string) {
+const exportChartAsPNG = (chartId: string, filename: string) => {
   const chartElement = document.getElementById(chartId);
   if (!chartElement) return;
 
@@ -68,13 +68,13 @@ export function exportChartAsPNG(chartId: string, filename: string) {
         document.body.removeChild(link);
       }
     });
-}
+};
 
-export function exportTableToCSV<T extends Record<string, unknown>>(
+const exportTableToCSV = <T extends Record<string, unknown>>(
   data: T[],
   columns: Array<{ key: string; label: string }>,
   filename: string
-) {
+) => {
   const headers = columns.map((col) => col.label);
   const rows = data.map((row) =>
     columns.map((col) => {
@@ -94,4 +94,6 @@ export function exportTableToCSV<T extends Record<string, unknown>>(
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-}
+};
+
+export { exportToCSV, exportChartAsPNG, exportTableToCSV };

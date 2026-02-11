@@ -4,15 +4,16 @@ import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
 import { Table } from "@/components/ui/Table";
-import { Badge } from "@/components/ui/Badge";
+import Badge from "@/components/ui/Badge";
 import { KpiCard } from "@/components/ui/KpiCard";
-import { Modal } from "@/components/ui/Modal";
-import { Dropdown } from "@/components/ui/Dropdown";
-import { PageHeader } from "@/components/ui/PageHeader";
+import Modal from "@/components/ui/Modal";
+import Dropdown from "@/components/ui/Dropdown";
+import PageHeader from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
-import { Button } from "@/components/ui/Button";
-import { Card, CardHeader } from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import { CardHeader } from "@/components/ui/Card";
 import {
   Plus,
   DollarSign,
@@ -47,7 +48,7 @@ const PlanPieChart = dynamic(
 );
 
 
-export default function BillingPage() {
+const BillingPage = () => {
   const [invoices, setInvoices] = useState<Invoice[]>(invoicesData);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<InvoiceStatus | "">("");
@@ -583,4 +584,6 @@ export default function BillingPage() {
       </Modal>
     </div>
   );
-}
+};
+
+export default BillingPage;
