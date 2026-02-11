@@ -16,6 +16,9 @@ import {
   UserPlus,
   Calendar,
   Clock,
+  Eye,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { KpiCard } from "@/components/ui/KpiCard";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
@@ -63,6 +66,7 @@ export default function OverviewPage() {
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hiddenWidgets, setHiddenWidgets] = useState<Set<string>>(new Set());
+  const [showHiddenWidgets, setShowHiddenWidgets] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -220,6 +224,122 @@ export default function OverviewPage() {
           </button>
         ))}
       </div>
+
+      {/* Hidden Widgets Restore Section */}
+      {hiddenWidgets.size > 0 && (
+        <div className="glass-card transition-fade-in p-4">
+          <button
+            type="button"
+            onClick={() => setShowHiddenWidgets(!showHiddenWidgets)}
+            className="flex w-full items-center justify-between text-left"
+          >
+            <div className="flex items-center gap-2">
+              <Eye className="h-4 w-4 text-zinc-400" />
+              <span className="text-sm font-medium text-zinc-300">
+                Hidden Widgets ({hiddenWidgets.size})
+              </span>
+            </div>
+            {showHiddenWidgets ? (
+              <ChevronUp className="h-4 w-4 text-zinc-400" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-zinc-400" />
+            )}
+          </button>
+          {showHiddenWidgets && (
+            <div className="mt-4 space-y-2">
+              <p className="text-xs text-zinc-500 mb-3">
+                Click "Show" to restore any hidden widget
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                {hiddenWidgets.has("quickActions") && (
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-700/60 bg-zinc-900/50 p-3">
+                    <span className="text-sm text-zinc-300">Quick Actions</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleWidget("quickActions")}
+                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      Show
+                    </button>
+                  </div>
+                )}
+                {hiddenWidgets.has("kpis") && (
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-700/60 bg-zinc-900/50 p-3">
+                    <span className="text-sm text-zinc-300">Key Metrics</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleWidget("kpis")}
+                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      Show
+                    </button>
+                  </div>
+                )}
+                {hiddenWidgets.has("revenueChart") && (
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-700/60 bg-zinc-900/50 p-3">
+                    <span className="text-sm text-zinc-300">Revenue Chart</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleWidget("revenueChart")}
+                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      Show
+                    </button>
+                  </div>
+                )}
+                {hiddenWidgets.has("trafficChart") && (
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-700/60 bg-zinc-900/50 p-3">
+                    <span className="text-sm text-zinc-300">Traffic Sources</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleWidget("trafficChart")}
+                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      Show
+                    </button>
+                  </div>
+                )}
+                {hiddenWidgets.has("activity") && (
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-700/60 bg-zinc-900/50 p-3">
+                    <span className="text-sm text-zinc-300">Recent Activity</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleWidget("activity")}
+                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      Show
+                    </button>
+                  </div>
+                )}
+                {hiddenWidgets.has("products") && (
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-700/60 bg-zinc-900/50 p-3">
+                    <span className="text-sm text-zinc-300">Top Products</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleWidget("products")}
+                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      Show
+                    </button>
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setHiddenWidgets(new Set());
+                  if (typeof window !== "undefined") {
+                    localStorage.setItem("hiddenWidgets", JSON.stringify([]));
+                  }
+                }}
+                className="mt-3 w-full rounded-lg border border-indigo-500/50 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors"
+              >
+                Show All Widgets
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Quick Actions */}
       {!hiddenWidgets.has("quickActions") && (
