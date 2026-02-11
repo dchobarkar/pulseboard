@@ -1,13 +1,21 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
 import {
   revenueVsExpenses,
+  revenueVsExpenses7d,
+  revenueVsExpenses30d,
   userGrowthData,
+  userGrowthData7d,
+  userGrowthData30d,
   funnelSteps,
+  funnelSteps7d,
+  funnelSteps30d,
   retentionData,
+  retentionData7d,
+  retentionData30d,
 } from "@/data/dashboard";
 
 const RevenueVsExpensesChart = dynamic(
@@ -41,6 +49,58 @@ const dateRanges = [
 export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState<string>("30d");
 
+  const filteredRevenueVsExpenses = useMemo(() => {
+    switch (dateRange) {
+      case "7d":
+        return revenueVsExpenses7d;
+      case "30d":
+        return revenueVsExpenses30d;
+      case "90d":
+        return revenueVsExpenses;
+      default:
+        return revenueVsExpenses30d;
+    }
+  }, [dateRange]);
+
+  const filteredUserGrowth = useMemo(() => {
+    switch (dateRange) {
+      case "7d":
+        return userGrowthData7d;
+      case "30d":
+        return userGrowthData30d;
+      case "90d":
+        return userGrowthData;
+      default:
+        return userGrowthData30d;
+    }
+  }, [dateRange]);
+
+  const filteredFunnel = useMemo(() => {
+    switch (dateRange) {
+      case "7d":
+        return funnelSteps7d;
+      case "30d":
+        return funnelSteps30d;
+      case "90d":
+        return funnelSteps;
+      default:
+        return funnelSteps30d;
+    }
+  }, [dateRange]);
+
+  const filteredRetention = useMemo(() => {
+    switch (dateRange) {
+      case "7d":
+        return retentionData7d;
+      case "30d":
+        return retentionData30d;
+      case "90d":
+        return retentionData;
+      default:
+        return retentionData30d;
+    }
+  }, [dateRange]);
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -70,19 +130,19 @@ export default function AnalyticsPage() {
 
       <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         <ChartWrapper title="Revenue vs expenses">
-          <RevenueVsExpensesChart data={revenueVsExpenses} />
+          <RevenueVsExpensesChart data={filteredRevenueVsExpenses} />
         </ChartWrapper>
         <ChartWrapper title="User growth">
-          <UserGrowthChart data={userGrowthData} />
+          <UserGrowthChart data={filteredUserGrowth} />
         </ChartWrapper>
       </div>
 
       <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         <ChartWrapper title="Conversion funnel">
-          <FunnelChart data={funnelSteps} />
+          <FunnelChart data={filteredFunnel} />
         </ChartWrapper>
         <ChartWrapper title="Retention">
-          <RetentionChart data={retentionData} />
+          <RetentionChart data={filteredRetention} />
         </ChartWrapper>
       </div>
     </div>
