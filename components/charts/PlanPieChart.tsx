@@ -32,7 +32,7 @@ export function PlanPieChart({ data }: { data: PlanItem[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number, name: string) => [`${value}%`, name]}
+          formatter={(value: number | undefined, name: string | undefined) => [`${value ?? 0}%`, name || ""]}
         />
         <Legend
           wrapperStyle={{ fontSize: "12px" }}

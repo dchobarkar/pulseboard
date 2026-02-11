@@ -42,7 +42,7 @@ export function MrrChart({ data }: { data: DataPoint[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => [`$${value.toLocaleString()}`, "MRR"]}
+          formatter={(value: number | undefined) => [`$${(value ?? 0).toLocaleString()}`, "MRR"]}
         />
         <Area
           type="monotone"

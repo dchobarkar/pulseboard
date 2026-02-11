@@ -43,7 +43,7 @@ export function FunnelChart({ data }: { data: FunnelStep[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => [value.toLocaleString(), "Count"]}
+          formatter={(value: number | undefined) => [(value ?? 0).toLocaleString(), "Count"]}
         />
         <Bar
           dataKey="count"

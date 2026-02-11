@@ -37,7 +37,7 @@ export function RevenueLineChart({ data }: { data: DataPoint[] }) {
             borderRadius: "8px",
           }}
           labelStyle={{ color: "#a1a1aa" }}
-          formatter={(value: number) => [`$${value.toLocaleString()}`, "Revenue"]}
+          formatter={(value: number | undefined) => [`$${(value ?? 0).toLocaleString()}`, "Revenue"]}
         />
         <Line
           type="monotone"

@@ -41,7 +41,7 @@ export function UserGrowthChart({ data }: { data: DataPoint[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => [value.toLocaleString(), "Users"]}
+          formatter={(value: number | undefined) => [(value ?? 0).toLocaleString(), "Users"]}
         />
         <Area
           type="monotone"

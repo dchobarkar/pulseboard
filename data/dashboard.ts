@@ -295,46 +295,308 @@ export interface Report {
   id: string;
   name: string;
   type: string;
+  category?: string;
   date: string;
+  dateFrom?: string; // Start date of the report data range
+  dateTo?: string; // End date of the report data range
   status: "ready" | "generating" | "failed";
+  scheduled?: boolean;
+  scheduleFrequency?: "daily" | "weekly" | "monthly";
+  emailRecipients?: string[];
+  description?: string;
 }
 
+// Helper function to generate date ranges relative to today
+const getDateRanges = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  // Last 7 days
+  const last7DaysFrom = new Date(today);
+  last7DaysFrom.setDate(last7DaysFrom.getDate() - 6);
+  
+  // Last 30 days
+  const last30DaysFrom = new Date(today);
+  last30DaysFrom.setDate(last30DaysFrom.getDate() - 29);
+  
+  // Last 90 days
+  const last90DaysFrom = new Date(today);
+  last90DaysFrom.setDate(last90DaysFrom.getDate() - 89);
+  
+  // This month
+  const thisMonthFrom = new Date(today.getFullYear(), today.getMonth(), 1);
+  
+  // Last month
+  const lastMonthFrom = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+  const lastMonthTo = new Date(today.getFullYear(), today.getMonth(), 0);
+  
+  // Older dates (outside all presets)
+  const oldDate1 = new Date(today);
+  oldDate1.setDate(oldDate1.getDate() - 120);
+  const oldDate2 = new Date(today);
+  oldDate2.setDate(oldDate2.getDate() - 100);
+  
+  return {
+    today: today.toISOString().split("T")[0],
+    last7DaysFrom: last7DaysFrom.toISOString().split("T")[0],
+    last30DaysFrom: last30DaysFrom.toISOString().split("T")[0],
+    last90DaysFrom: last90DaysFrom.toISOString().split("T")[0],
+    thisMonthFrom: thisMonthFrom.toISOString().split("T")[0],
+    lastMonthFrom: lastMonthFrom.toISOString().split("T")[0],
+    lastMonthTo: lastMonthTo.toISOString().split("T")[0],
+    oldDate1: oldDate1.toISOString().split("T")[0],
+    oldDate2: oldDate2.toISOString().split("T")[0],
+  };
+};
+
+const dateRanges = getDateRanges();
+
 export const reportsData: Report[] = [
+  // Reports covering Last 7 days
   {
     id: "1",
-    name: "Monthly Revenue Summary",
+    name: "Weekly Revenue Summary",
     type: "CSV",
-    date: "2024-06-01",
+    category: "Financial",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last7DaysFrom,
+    dateTo: dateRanges.today,
     status: "ready",
+    scheduled: true,
+    scheduleFrequency: "weekly",
+    emailRecipients: ["admin@example.com"],
+    description: "Weekly revenue breakdown for the past 7 days",
   },
   {
     id: "2",
-    name: "User Acquisition Report",
-    type: "CSV",
-    date: "2024-05-28",
+    name: "Recent User Activity",
+    type: "PDF",
+    category: "Performance",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last7DaysFrom,
+    dateTo: dateRanges.today,
     status: "ready",
+    scheduled: false,
+    description: "User activity and engagement metrics for the last week",
   },
+  
+  // Reports covering Last 30 days
   {
     id: "3",
-    name: "Churn Analysis",
+    name: "Monthly Revenue Summary",
     type: "CSV",
-    date: "2024-05-15",
+    category: "Financial",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last30DaysFrom,
+    dateTo: dateRanges.today,
     status: "ready",
+    scheduled: true,
+    scheduleFrequency: "monthly",
+    emailRecipients: ["admin@example.com", "finance@example.com"],
+    description: "Comprehensive monthly revenue breakdown",
   },
   {
     id: "4",
-    name: "Q2 Analytics Export",
-    type: "CSV",
-    date: "2024-06-30",
-    status: "generating",
+    name: "User Acquisition Report",
+    type: "PDF",
+    category: "Performance",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last30DaysFrom,
+    dateTo: dateRanges.today,
+    status: "ready",
+    scheduled: false,
+    description: "New user signups and acquisition metrics for the past month",
   },
   {
     id: "5",
-    name: "Billing Overview",
-    type: "CSV",
-    date: "2024-06-10",
-    status: "failed",
+    name: "Marketing Campaign Performance",
+    type: "Excel",
+    category: "Marketing",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last30DaysFrom,
+    dateTo: dateRanges.today,
+    status: "ready",
+    scheduled: true,
+    scheduleFrequency: "monthly",
+    emailRecipients: ["marketing@example.com"],
+    description: "Marketing campaign ROI and performance metrics",
   },
+  
+  // Reports covering Last 90 days
+  {
+    id: "6",
+    name: "Quarterly Analytics Export",
+    type: "CSV",
+    category: "Operational",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last90DaysFrom,
+    dateTo: dateRanges.today,
+    status: "ready",
+    scheduled: false,
+    description: "Quarterly analytics data export covering the past 90 days",
+  },
+  {
+    id: "7",
+    name: "Sales Performance Report",
+    type: "PDF",
+    category: "Sales",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last90DaysFrom,
+    dateTo: dateRanges.today,
+    status: "generating",
+    scheduled: false,
+    description: "Comprehensive sales performance analysis for Q2",
+  },
+  {
+    id: "8",
+    name: "Churn Analysis",
+    type: "Excel",
+    category: "Performance",
+    date: dateRanges.today,
+    dateFrom: dateRanges.last90DaysFrom,
+    dateTo: dateRanges.today,
+    status: "ready",
+    scheduled: true,
+    scheduleFrequency: "monthly",
+    emailRecipients: ["analytics@example.com"],
+    description: "User churn and retention analysis for the quarter",
+  },
+  
+  // Reports covering This Month
+  {
+    id: "9",
+    name: "Current Month Revenue",
+    type: "CSV",
+    category: "Financial",
+    date: dateRanges.today,
+    dateFrom: dateRanges.thisMonthFrom,
+    dateTo: dateRanges.today,
+    status: "ready",
+    scheduled: true,
+    scheduleFrequency: "daily",
+    emailRecipients: ["admin@example.com"],
+    description: "Daily revenue tracking for the current month",
+  },
+  {
+    id: "10",
+    name: "Monthly User Growth",
+    type: "PDF",
+    category: "Performance",
+    date: dateRanges.today,
+    dateFrom: dateRanges.thisMonthFrom,
+    dateTo: dateRanges.today,
+    status: "ready",
+    scheduled: false,
+    description: "User growth metrics for the current month",
+  },
+  
+  // Reports covering Last Month
+  {
+    id: "11",
+    name: "Previous Month Summary",
+    type: "CSV",
+    category: "Financial",
+    date: dateRanges.lastMonthTo,
+    dateFrom: dateRanges.lastMonthFrom,
+    dateTo: dateRanges.lastMonthTo,
+    status: "ready",
+    scheduled: true,
+    scheduleFrequency: "monthly",
+    emailRecipients: ["admin@example.com"],
+    description: "Complete financial summary for the previous month",
+  },
+  {
+    id: "12",
+    name: "Last Month Billing Overview",
+    type: "PDF",
+    category: "Financial",
+    date: dateRanges.lastMonthTo,
+    dateFrom: dateRanges.lastMonthFrom,
+    dateTo: dateRanges.lastMonthTo,
+    status: "ready",
+    scheduled: false,
+    description: "Billing and invoice overview for last month",
+  },
+  {
+    id: "13",
+    name: "Previous Month Analytics",
+    type: "Excel",
+    category: "Operational",
+    date: dateRanges.lastMonthTo,
+    dateFrom: dateRanges.lastMonthFrom,
+    dateTo: dateRanges.lastMonthTo,
+    status: "ready",
+    scheduled: false,
+    description: "Operational metrics and analytics for last month",
+  },
+  
+  // Reports outside all presets (older than 90 days)
+  {
+    id: "14",
+    name: "Historical Q1 Report",
+    type: "CSV",
+    category: "Financial",
+    date: dateRanges.oldDate1,
+    dateFrom: dateRanges.oldDate2,
+    dateTo: dateRanges.oldDate1,
+    status: "ready",
+    scheduled: false,
+    description: "Historical Q1 financial report",
+  },
+  {
+    id: "15",
+    name: "Old Analytics Export",
+    type: "PDF",
+    category: "Operational",
+    date: dateRanges.oldDate2,
+    dateFrom: dateRanges.oldDate2,
+    dateTo: dateRanges.oldDate1,
+    status: "failed",
+    scheduled: false,
+    description: "Older analytics export (over 90 days old)",
+  },
+];
+
+export const reportTemplates = [
+  {
+    id: "financial-summary",
+    name: "Financial Summary",
+    category: "Financial",
+    description: "Revenue, expenses, and profit analysis",
+  },
+  {
+    id: "user-growth",
+    name: "User Growth Report",
+    category: "Performance",
+    description: "User acquisition and growth metrics",
+  },
+  {
+    id: "sales-performance",
+    name: "Sales Performance",
+    category: "Sales",
+    description: "Sales metrics and conversion rates",
+  },
+  {
+    id: "marketing-campaigns",
+    name: "Marketing Campaigns",
+    category: "Marketing",
+    description: "Campaign performance and ROI",
+  },
+  {
+    id: "operational-status",
+    name: "Operational Status",
+    category: "Operational",
+    description: "System health and operational metrics",
+  },
+];
+
+export const reportCategories = [
+  "Financial",
+  "Performance",
+  "Marketing",
+  "Sales",
+  "Operational",
+  "Status",
 ];
 
 // Notifications

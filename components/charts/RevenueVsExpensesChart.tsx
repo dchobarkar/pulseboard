@@ -38,8 +38,8 @@ export function RevenueVsExpensesChart({ data }: { data: DataPoint[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number, name: string) => [
-            `$${value.toLocaleString()}`,
+          formatter={(value: number | undefined, name: string | undefined) => [
+            `$${(value ?? 0).toLocaleString()}`,
             name === "revenue" ? "Revenue" : "Expenses",
           ]}
         />

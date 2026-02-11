@@ -37,7 +37,7 @@ export function RetentionChart({ data }: { data: RetentionPoint[] }) {
             border: "1px solid rgba(63,63,70,0.6)",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => [`${value}%`, "Retention"]}
+          formatter={(value: number | undefined) => [`${value ?? 0}%`, "Retention"]}
         />
         <Bar
           dataKey="rate"
