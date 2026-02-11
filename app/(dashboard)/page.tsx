@@ -8,14 +8,7 @@ import {
   TrendingUp,
   Percent,
   Activity,
-  RefreshCw,
   Download,
-  Plus,
-  FileText,
-  BarChart3,
-  UserPlus,
-  Calendar,
-  Clock,
 } from "lucide-react";
 import { KpiCard } from "@/components/ui/KpiCard";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
@@ -37,7 +30,8 @@ import {
   overviewDataMonth,
   overviewDataLastMonth,
   overviewDataQuarter,
-} from "@/data/dashboard";
+} from "@/data/overview";
+import { OVERVIEW_DATE_RANGES, QUICK_ACTIONS, WIDGET_LABELS, STORAGE_KEYS } from "@/data";
 
 const RevenueLineChart = dynamic(
   () => import("@/components/charts/RevenueLineChart").then((m) => m.RevenueLineChart),
@@ -48,19 +42,6 @@ const TrafficPieChart = dynamic(
   { ssr: false }
 );
 
-const dateRanges = [
-  { label: "Today", value: "today" },
-  { label: "This Week", value: "week" },
-  { label: "This Month", value: "month" },
-  { label: "Last Month", value: "lastMonth" },
-  { label: "Last 3 Months", value: "quarter" },
-];
-
-const quickActions = [
-  { label: "Add User", icon: UserPlus, href: "/users", action: "add" },
-  { label: "Generate Report", icon: FileText, href: "/reports", action: "generate" },
-  { label: "View Analytics", icon: BarChart3, href: "/analytics", action: "view" },
-];
 
 export default function OverviewPage() {
   const [selectedRange, setSelectedRange] = useState("month");
@@ -71,7 +52,7 @@ export default function OverviewPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("hiddenWidgets");
+      const saved = localStorage.getItem(STORAGE_KEYS.HIDDEN_WIDGETS);
       if (saved) {
         try {
           setHiddenWidgets(new Set(JSON.parse(saved)));
@@ -99,7 +80,7 @@ export default function OverviewPage() {
     }
     setHiddenWidgets(newHidden);
     if (typeof window !== "undefined") {
-      localStorage.setItem("hiddenWidgets", JSON.stringify(Array.from(newHidden)));
+      localStorage.setItem(STORAGE_KEYS.HIDDEN_WIDGETS, JSON.stringify(Array.from(newHidden)));
     }
   };
 
@@ -180,15 +161,6 @@ export default function OverviewPage() {
     },
   ];
 
-  const widgetLabels: Record<string, string> = {
-    quickActions: "Quick Actions",
-    kpis: "Key Metrics",
-    revenueChart: "Revenue Chart",
-    trafficChart: "Traffic Sources",
-    activity: "Recent Activity",
-    products: "Top Products",
-  };
-
   return (
     <div className="space-y-4 sm:space-y-6">
       <PageHeader
@@ -200,19 +172,19 @@ export default function OverviewPage() {
       />
 
       <DateRangeFilter
-        options={dateRanges}
+        options={OVERVIEW_DATE_RANGES}
         selectedValue={selectedRange}
         onChange={setSelectedRange}
       />
 
       <HiddenWidgetsPanel
         hiddenWidgets={hiddenWidgets}
-        widgetLabels={widgetLabels}
+        widgetLabels={WIDGET_LABELS}
         onShowWidget={toggleWidget}
         onShowAll={() => {
           setHiddenWidgets(new Set());
           if (typeof window !== "undefined") {
-            localStorage.setItem("hiddenWidgets", JSON.stringify([]));
+            localStorage.setItem(STORAGE_KEYS.HIDDEN_WIDGETS, JSON.stringify([]));
           }
         }}
       />
@@ -226,7 +198,7 @@ export default function OverviewPage() {
       >
         <Card>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {quickActions.map((action) => {
+            {QUICK_ACTIONS.map((action) => {
               const Icon = action.icon;
               return (
                 <a

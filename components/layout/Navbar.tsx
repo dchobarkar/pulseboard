@@ -5,7 +5,8 @@ import { Dropdown } from "@/components/ui/Dropdown";
 import { NotificationsDropdown } from "@/components/ui/NotificationsDropdown";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { initialNotifications, type Notification } from "@/data/dashboard";
+import { initialNotifications, type Notification } from "@/data/notifications";
+import { STORAGE_KEYS } from "@/data/constants";
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -15,7 +16,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   const router = useRouter();
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+      const saved = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
       return saved || "dark";
     }
     return "dark";
@@ -28,7 +29,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
     root.classList.remove("light", "dark");
     root.classList.add(theme);
     if (typeof window !== "undefined") {
-      localStorage.setItem("theme", theme);
+      localStorage.setItem(STORAGE_KEYS.THEME, theme);
       // Dispatch custom event for same-tab sync
       window.dispatchEvent(new Event("themechange"));
     }
@@ -37,14 +38,14 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   // Listen for theme changes from settings page
   useEffect(() => {
     const handleThemeChange = () => {
-      const currentTheme = localStorage.getItem("theme") as "dark" | "light" | null;
+      const currentTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
       if (currentTheme && currentTheme !== theme) {
         setTheme(currentTheme);
       }
     };
 
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "theme" && e.newValue) {
+      if (e.key === STORAGE_KEYS.THEME && e.newValue) {
         setTheme(e.newValue as "dark" | "light");
       }
     };

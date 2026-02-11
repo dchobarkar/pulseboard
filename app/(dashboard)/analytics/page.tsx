@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState, useMemo } from "react";
-import { RefreshCw, Clock, Download, FileDown } from "lucide-react";
+import { RefreshCw, Clock } from "lucide-react";
 import { ChartWrapper } from "@/components/ui/ChartWrapper";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { DateRangeFilter } from "@/components/ui/DateRangeFilter";
@@ -20,7 +20,8 @@ import {
   retentionData,
   retentionData7d,
   retentionData30d,
-} from "@/data/dashboard";
+} from "@/data/analytics";
+import { ANALYTICS_DATE_RANGES } from "@/data/constants";
 
 const RevenueVsExpensesChart = dynamic(
   () =>
@@ -44,11 +45,6 @@ const RetentionChart = dynamic(
   { ssr: false }
 );
 
-const dateRanges = [
-  { value: "7d", label: "Last 7 days" },
-  { value: "30d", label: "Last 30 days" },
-  { value: "90d", label: "Last 90 days" },
-] as const;
 
 export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState<string>("30d");
@@ -213,7 +209,7 @@ export default function AnalyticsPage() {
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
         <DateRangeFilter
-          options={dateRanges}
+          options={ANALYTICS_DATE_RANGES}
           selectedValue={dateRange}
           onChange={setDateRange}
         />

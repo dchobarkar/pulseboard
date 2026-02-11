@@ -3,27 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Bell, X, CheckCircle2, AlertCircle, Info, CreditCard, Users, FileText, TrendingUp } from "lucide-react";
-import type { Notification } from "@/data/dashboard";
+import type { Notification } from "@/data/types";
 
-const notificationIcons = {
-  success: CheckCircle2,
-  warning: AlertCircle,
-  info: Info,
-  payment: CreditCard,
-  user: Users,
-  report: FileText,
-  growth: TrendingUp,
-};
-
-const notificationColors = {
-  success: "text-emerald-400 bg-emerald-500/20",
-  warning: "text-amber-400 bg-amber-500/20",
-  info: "text-blue-400 bg-blue-500/20",
-  payment: "text-indigo-400 bg-indigo-500/20",
-  user: "text-purple-400 bg-purple-500/20",
-  report: "text-cyan-400 bg-cyan-500/20",
-  growth: "text-green-400 bg-green-500/20",
-};
+import { NOTIFICATION_ICONS, NOTIFICATION_COLORS } from "@/data/notifications";
 
 interface NotificationsDropdownProps {
   notifications: Notification[];
@@ -105,8 +87,8 @@ export function NotificationsDropdown({
         ) : (
           <div className="divide-y divide-zinc-800/60">
             {notifications.map((notification) => {
-              const Icon = notificationIcons[notification.type];
-              const colorClass = notificationColors[notification.type];
+              const Icon = NOTIFICATION_ICONS[notification.type];
+              const colorClass = NOTIFICATION_COLORS[notification.type];
               return (
                 <div
                   key={notification.id}

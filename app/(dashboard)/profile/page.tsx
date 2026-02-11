@@ -5,30 +5,16 @@ import { useRouter } from "next/navigation";
 import { User, Mail, Calendar, Building2, MapPin, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-
-interface ProfileData {
-  displayName: string;
-  email: string;
-  organization: string;
-  location: string;
-  memberSince: string;
-}
-
-const defaultProfile: ProfileData = {
-  displayName: "Alex Chen",
-  email: "alex@example.com",
-  organization: "Acme Inc",
-  location: "San Francisco, CA",
-  memberSince: "January 2024",
-};
+import { DEFAULT_PROFILE, type ProfileData } from "@/data/settings";
+import { STORAGE_KEYS } from "@/data/constants";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<ProfileData>(defaultProfile);
+  const [profile, setProfile] = useState<ProfileData>(DEFAULT_PROFILE);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("appSettings");
+      const saved = localStorage.getItem(STORAGE_KEYS.APP_SETTINGS);
       if (saved) {
         try {
           const parsed = JSON.parse(saved);

@@ -15,14 +15,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const navItems = [
-  { href: "/", label: "Overview", icon: LayoutDashboard },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/users", label: "Users", icon: Users },
-  { href: "/billing", label: "Billing", icon: CreditCard },
-  { href: "/reports", label: "Reports", icon: FileText },
-  { href: "/settings", label: "Settings", icon: Settings },
-];
+import { NAV_ITEMS } from "@/data/navigation";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -80,7 +73,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             </button>
           </div>
           <nav className="flex-1 space-y-0.5 overflow-y-auto p-2" aria-label="Main">
-            {navItems.map(({ href, label, icon: Icon }) => {
+            {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
               const isActive =
                 pathname === href || (href !== "/" && pathname.startsWith(href));
               return (
@@ -119,7 +112,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         )}
       </div>
       <nav className="flex-1 space-y-0.5 p-2" aria-label="Main">
-        {navItems.map(({ href, label, icon: Icon }) => {
+        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const isActive =
             pathname === href || (href !== "/" && pathname.startsWith(href));
           return (

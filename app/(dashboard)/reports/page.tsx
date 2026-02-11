@@ -2,29 +2,34 @@
 
 import { useState, useMemo, useEffect } from "react";
 import {
-  Download,
   FileText,
-  Loader2,
-  AlertCircle,
   Plus,
   Search,
   MoreVertical,
   Edit2,
   Trash2,
-  RefreshCw,
-  X,
   Mail,
   Calendar,
   Clock,
-  FileDown,
+  Download,
+  Loader2,
+  RefreshCw,
   FileJson,
+  X,
 } from "lucide-react";
 import {
   reportsData,
   reportTemplates,
   reportCategories,
+  REPORT_STATUS_CONFIG,
+  REPORT_TYPES,
+  SCHEDULE_FREQUENCIES,
+  DATE_PRESETS,
+  REPORT_STATUS_OPTIONS,
+  REPORT_TYPE_OPTIONS,
   type Report,
-} from "@/data/dashboard";
+  type DatePreset,
+} from "@/data/reports";
 import { Modal } from "@/components/ui/Modal";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Badge } from "@/components/ui/Badge";
@@ -36,49 +41,6 @@ import { Card, CardHeader } from "@/components/ui/Card";
 import { FormField, Input, Select, Textarea } from "@/components/ui/FormField";
 import { EmptyState } from "@/components/ui/EmptyState";
 
-const statusConfig: Record<
-  Report["status"],
-  {
-    icon: typeof FileText;
-    label: string;
-    color: string;
-    badgeVariant: "success" | "warning" | "error";
-  }
-> = {
-  ready: {
-    icon: Download,
-    label: "Download",
-    color: "text-emerald-400",
-    badgeVariant: "success",
-  },
-  generating: {
-    icon: Loader2,
-    label: "Generating...",
-    color: "text-amber-400",
-    badgeVariant: "warning",
-  },
-  failed: {
-    icon: AlertCircle,
-    label: "Failed",
-    color: "text-rose-400",
-    badgeVariant: "error",
-  },
-};
-
-const reportTypes = ["CSV", "PDF", "Excel", "JSON", "PNG"];
-const scheduleFrequencies = [
-  { value: "daily", label: "Daily" },
-  { value: "weekly", label: "Weekly" },
-  { value: "monthly", label: "Monthly" },
-];
-
-const datePresets = [
-  { label: "Last 7 days", days: 7 },
-  { label: "Last 30 days", days: 30 },
-  { label: "Last 90 days", days: 90 },
-  { label: "This month", days: null, preset: "thisMonth" },
-  { label: "Last month", days: null, preset: "lastMonth" },
-];
 
 export default function ReportsPage() {
   const [reports, setReports] = useState<Report[]>(reportsData);
@@ -98,15 +60,25 @@ export default function ReportsPage() {
   );
   const [useTemplate, setUseTemplate] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    type: string;
+    category: string;
+    date: string;
+    description: string;
+    scheduled: boolean;
+    scheduleFrequency: "daily" | "weekly" | "monthly";
+    emailRecipients: string[];
+    emailInput: string;
+  }>({
     name: "",
-    type: "CSV",
+    type: REPORT_TYPES[0],
     category: "",
     date: new Date().toISOString().split("T")[0],
     description: "",
     scheduled: false,
-    scheduleFrequency: "weekly" as "daily" | "weekly" | "monthly",
-    emailRecipients: [] as string[],
+    scheduleFrequency: SCHEDULE_FREQUENCIES[1].value,
+    emailRecipients: [],
     emailInput: "",
   });
 
@@ -182,28 +154,30 @@ export default function ReportsPage() {
     }
   };
 
-  const applyDatePreset = (preset: typeof datePresets[0]) => {
+  const applyDatePreset = (preset: DatePreset) => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day
+    today.setHours(0, 0, 0, 0);
     
-    if (preset.preset === "thisMonth") {
-      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-      setDateFrom(firstDay.toISOString().split("T")[0]);
-      setDateTo(today.toISOString().split("T")[0]);
-    } else if (preset.preset === "lastMonth") {
-      const firstDayLastMonth = new Date(
-        today.getFullYear(),
-        today.getMonth() - 1,
-        1
-      );
-      const lastDayLastMonth = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        0
-      );
-      setDateFrom(firstDayLastMonth.toISOString().split("T")[0]);
-      setDateTo(lastDayLastMonth.toISOString().split("T")[0]);
-    } else if (preset.days) {
+    if ("preset" in preset) {
+      if (preset.preset === "thisMonth") {
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        setDateFrom(firstDay.toISOString().split("T")[0]);
+        setDateTo(today.toISOString().split("T")[0]);
+      } else if (preset.preset === "lastMonth") {
+        const firstDayLastMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() - 1,
+          1
+        );
+        const lastDayLastMonth = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          0
+        );
+        setDateFrom(firstDayLastMonth.toISOString().split("T")[0]);
+        setDateTo(lastDayLastMonth.toISOString().split("T")[0]);
+      }
+    } else {
       // For "Last N days", we want to include today, so we go back (days - 1) days
       const fromDate = new Date(today);
       fromDate.setDate(fromDate.getDate() - (preset.days - 1));
@@ -215,12 +189,12 @@ export default function ReportsPage() {
   const handleAddReport = () => {
     setFormData({
       name: "",
-      type: "CSV",
+      type: REPORT_TYPES[0],
       category: "",
       date: new Date().toISOString().split("T")[0],
       description: "",
       scheduled: false,
-      scheduleFrequency: "weekly",
+      scheduleFrequency: SCHEDULE_FREQUENCIES[1].value,
       emailRecipients: [],
       emailInput: "",
     });
@@ -264,18 +238,18 @@ export default function ReportsPage() {
 
   const handleEditReport = (report: Report) => {
     setSelectedReport(report);
-    setFormData({
-      name: report.name,
-      type: report.type,
-      category: report.category || "",
-      date: report.date,
-      description: report.description || "",
-      scheduled: report.scheduled || false,
-      scheduleFrequency: report.scheduleFrequency || "weekly",
-      emailRecipients: report.emailRecipients || [],
-      emailInput: "",
-    });
-    setIsEditModalOpen(true);
+        setFormData({
+          name: report.name,
+          type: report.type,
+          category: report.category || "",
+          date: report.date,
+          description: report.description || "",
+          scheduled: report.scheduled || false,
+          scheduleFrequency: (report.scheduleFrequency || SCHEDULE_FREQUENCIES[1].value) as "daily" | "weekly" | "monthly",
+          emailRecipients: report.emailRecipients || [],
+          emailInput: "",
+        });
+        setIsEditModalOpen(true);
   };
 
   const handleScheduleReport = (report: Report) => {
@@ -287,7 +261,7 @@ export default function ReportsPage() {
       date: report.date,
       description: report.description || "",
       scheduled: report.scheduled || false,
-      scheduleFrequency: report.scheduleFrequency || "weekly",
+      scheduleFrequency: (report.scheduleFrequency || SCHEDULE_FREQUENCIES[1].value) as "daily" | "weekly" | "monthly",
       emailRecipients: report.emailRecipients || [],
       emailInput: "",
     });
@@ -388,12 +362,12 @@ export default function ReportsPage() {
     }
     setFormData({
       name: "",
-      type: "CSV",
+      type: REPORT_TYPES[0],
       category: "",
       date: new Date().toISOString().split("T")[0],
       description: "",
       scheduled: false,
-      scheduleFrequency: "weekly",
+      scheduleFrequency: SCHEDULE_FREQUENCIES[1].value,
       emailRecipients: [],
       emailInput: "",
     });
@@ -408,9 +382,13 @@ export default function ReportsPage() {
   };
 
   const handleDownload = (report: Report) => {
-    // Simulate download
-    console.log(`Downloading ${report.name}...`);
-    // In a real app, this would trigger an actual download
+    // Simulate download - in a real app, this would trigger an actual download
+    const link = document.createElement("a");
+    link.href = `#download-${report.id}`;
+    link.download = `${report.name}.${report.type.toLowerCase()}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -463,7 +441,7 @@ export default function ReportsPage() {
               />
             </div>
             <div className="flex flex-wrap gap-2">
-              {datePresets.map((preset) => (
+              {DATE_PRESETS.map((preset) => (
                 <button
                   key={preset.label}
                   type="button"
@@ -497,10 +475,12 @@ export default function ReportsPage() {
           }
           className="rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
         >
-          <option value="">All statuses</option>
-          <option value="ready">Ready</option>
-          <option value="generating">Generating</option>
-          <option value="failed">Failed</option>
+              <option value="">All statuses</option>
+              {REPORT_STATUS_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
         </select>
         <select
           value={typeFilter}
@@ -508,9 +488,9 @@ export default function ReportsPage() {
           className="rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
         >
           <option value="">All types</option>
-          {reportTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
+          {REPORT_TYPE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
             </option>
           ))}
         </select>
@@ -548,7 +528,7 @@ export default function ReportsPage() {
           />
         ) : (
           filtered.map((report) => {
-            const config = statusConfig[report.status];
+            const config = REPORT_STATUS_CONFIG[report.status as Report["status"]];
             const Icon = config.icon;
             return (
               <div
@@ -777,9 +757,9 @@ export default function ReportsPage() {
                 }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
-                {reportTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
+                {REPORT_TYPE_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -857,7 +837,7 @@ export default function ReportsPage() {
               </div>
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
-              {datePresets.map((preset) => (
+              {DATE_PRESETS.map((preset) => (
                 <button
                   key={preset.label}
                   type="button"
@@ -921,7 +901,7 @@ export default function ReportsPage() {
                     }
                     className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
                   >
-                    {scheduleFrequencies.map((freq) => (
+                    {SCHEDULE_FREQUENCIES.map((freq) => (
                       <option key={freq.value} value={freq.value}>
                         {freq.label}
                       </option>
@@ -1035,9 +1015,9 @@ export default function ReportsPage() {
                 }
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
-                {reportTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
+                {REPORT_TYPE_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -1149,15 +1129,12 @@ export default function ReportsPage() {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      scheduleFrequency: e.target.value as
-                        | "daily"
-                        | "weekly"
-                        | "monthly",
+                      scheduleFrequency: e.target.value as "daily" | "weekly" | "monthly",
                     })
                   }
                   className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
                 >
-                  {scheduleFrequencies.map((freq) => (
+                    {SCHEDULE_FREQUENCIES.map((freq) => (
                     <option key={freq.value} value={freq.value}>
                       {freq.label}
                     </option>

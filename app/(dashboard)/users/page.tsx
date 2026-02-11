@@ -11,22 +11,17 @@ import { SearchBar } from "@/components/ui/SearchBar";
 import { FilterBar, FilterSelect } from "@/components/ui/FilterBar";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { usersData, type User, type UserRole, type UserStatus } from "@/data/dashboard";
-
-const roleVariant: Record<UserRole, "default" | "info" | "warning" | "success"> = {
-  admin: "info",
-  member: "default",
-  viewer: "warning",
-  guest: "default",
-};
-
-const statusVariant: Record<UserStatus, "success" | "error" | "warning"> = {
-  active: "success",
-  inactive: "error",
-  pending: "warning",
-};
-
-const ITEMS_PER_PAGE = 4;
+import {
+  usersData,
+  type User,
+  type UserRole,
+  type UserStatus,
+  ROLE_VARIANT,
+  STATUS_VARIANT,
+  ROLE_OPTIONS,
+  STATUS_OPTIONS,
+} from "@/data/users";
+import { ITEMS_PER_PAGE } from "@/data/constants";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>(usersData);
@@ -129,18 +124,6 @@ export default function UsersPage() {
     }
   };
 
-  const roleOptions = [
-    { label: "Admin", value: "admin" },
-    { label: "Member", value: "member" },
-    { label: "Viewer", value: "viewer" },
-    { label: "Guest", value: "guest" },
-  ];
-
-  const statusOptions = [
-    { label: "Active", value: "active" },
-    { label: "Inactive", value: "inactive" },
-    { label: "Pending", value: "pending" },
-  ];
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -171,7 +154,7 @@ export default function UsersPage() {
             setRoleFilter((value || "") as UserRole | "");
             setPage(1);
           }}
-          options={roleOptions}
+          options={ROLE_OPTIONS}
           placeholder="All roles"
         />
         <FilterSelect
@@ -181,7 +164,7 @@ export default function UsersPage() {
             setStatusFilter((value || "") as UserStatus | "");
             setPage(1);
           }}
-          options={statusOptions}
+          options={STATUS_OPTIONS}
           placeholder="All statuses"
         />
       </FilterBar>
@@ -196,7 +179,7 @@ export default function UsersPage() {
               key: "role",
               label: "Role",
               render: (u) => (
-                <Badge variant={roleVariant[u.role]}>
+                <Badge variant={ROLE_VARIANT[u.role]}>
                   {u.role}
                 </Badge>
               ),
@@ -205,7 +188,7 @@ export default function UsersPage() {
               key: "status",
               label: "Status",
               render: (u) => (
-                <Badge variant={statusVariant[u.status]}>
+                <Badge variant={STATUS_VARIANT[u.status]}>
                   {u.status}
                 </Badge>
               ),

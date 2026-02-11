@@ -95,7 +95,13 @@ export function useKeyboardShortcuts() {
       if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         // Could show a modal with shortcuts
-        console.log("Keyboard shortcuts:\n/ - Search\nG + U - Users\nG + A - Analytics\nG + B - Billing\nG + R - Reports\nG + S - Settings");
+        // Keyboard shortcuts available:
+        // / or Cmd/Ctrl + K - Focus search
+        // G + U - Navigate to Users
+        // G + A - Navigate to Analytics
+        // G + B - Navigate to Billing
+        // G + R - Navigate to Reports
+        // G + S - Navigate to Settings
         return;
       }
     };

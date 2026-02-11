@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { User, Building2, Bell, Shield, Settings as SettingsIcon, ExternalLink } from "lucide-react";
 import { Sun, Moon } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { DEFAULT_SETTINGS, type SettingsData, SETTINGS_TABS } from "@/data/settings";
+import { STORAGE_KEYS } from "@/data/constants";
 
 const tabs = [
   { id: "profile", label: "Profile", icon: User },
@@ -14,68 +16,18 @@ const tabs = [
   { id: "security", label: "Security", icon: Shield },
 ] as const;
 
-interface SettingsData {
-  profile: {
-    displayName: string;
-    email: string;
-  };
-  workspace: {
-    name: string;
-  };
-  preferences: {
-    language: string;
-    timezone: string;
-    dateFormat: string;
-    theme: "dark" | "light";
-  };
-  notifications: {
-    email: boolean;
-    push: boolean;
-    weekly: boolean;
-  };
-  security: {
-    currentPassword: string;
-    newPassword: string;
-  };
-}
-
-const defaultSettings: SettingsData = {
-  profile: {
-    displayName: "Alex Chen",
-    email: "alex@example.com",
-  },
-  workspace: {
-    name: "Acme Inc",
-  },
-  preferences: {
-    language: "English",
-    timezone: "Pacific Time (PT)",
-    dateFormat: "MM/DD/YYYY",
-    theme: "dark",
-  },
-  notifications: {
-    email: true,
-    push: true,
-    weekly: true,
-  },
-  security: {
-    currentPassword: "",
-    newPassword: "",
-  },
-};
-
 export function SettingsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]["id"]>("profile");
-  const [settings, setSettings] = useState<SettingsData>(defaultSettings);
+  const [settings, setSettings] = useState<SettingsData>(DEFAULT_SETTINGS);
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   // Load settings from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("appSettings");
+      const saved = localStorage.getItem(STORAGE_KEYS.APP_SETTINGS);
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -86,7 +38,7 @@ export function SettingsContent() {
       }
       
       // Load theme from localStorage and sync
-      const savedTheme = localStorage.getItem("theme") as "dark" | "light" | null;
+      const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
       if (savedTheme) {
         setSettings((prev) => ({
           ...prev,
@@ -102,14 +54,14 @@ export function SettingsContent() {
     root.classList.remove("light", "dark");
     root.classList.add(settings.preferences.theme);
     if (typeof window !== "undefined") {
-      localStorage.setItem("theme", settings.preferences.theme);
+      localStorage.setItem(STORAGE_KEYS.THEME, settings.preferences.theme);
     }
   }, [settings.preferences.theme]);
 
   // Listen for theme changes from navbar
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "theme" && e.newValue) {
+      if (e.key === STORAGE_KEYS.THEME && e.newValue) {
         setSettings((prev) => ({
           ...prev,
           preferences: { ...prev.preferences, theme: e.newValue as "dark" | "light" },
@@ -118,7 +70,7 @@ export function SettingsContent() {
     };
 
     const handleThemeChange = () => {
-      const currentTheme = localStorage.getItem("theme") as "dark" | "light" | null;
+      const currentTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "dark" | "light" | null;
       if (currentTheme && currentTheme !== settings.preferences.theme) {
         setSettings((prev) => ({
           ...prev,
@@ -154,7 +106,7 @@ export function SettingsContent() {
 
       // Save to localStorage
       if (typeof window !== "undefined") {
-        const saved = localStorage.getItem("appSettings");
+        const saved = localStorage.getItem(STORAGE_KEYS.APP_SETTINGS);
         const existing = saved ? JSON.parse(saved) : {};
         localStorage.setItem(
           "appSettings",
@@ -183,7 +135,7 @@ export function SettingsContent() {
     }));
     // Trigger storage event for navbar sync
     if (typeof window !== "undefined") {
-      localStorage.setItem("theme", newTheme);
+      localStorage.setItem(STORAGE_KEYS.THEME, newTheme);
       // Dispatch custom event for same-tab sync
       window.dispatchEvent(new Event("themechange"));
     }

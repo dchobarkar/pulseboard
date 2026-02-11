@@ -9,15 +9,7 @@ interface BreadcrumbItem {
   href?: string;
 }
 
-const routeLabels: Record<string, string> = {
-  "/": "Overview",
-  "/analytics": "Analytics",
-  "/users": "Users",
-  "/billing": "Billing",
-  "/reports": "Reports",
-  "/settings": "Settings",
-  "/profile": "Profile",
-};
+import { ROUTE_LABELS } from "@/data/constants";
 
 export function Breadcrumbs() {
   const pathname = usePathname();
@@ -28,7 +20,7 @@ export function Breadcrumbs() {
     ...paths.map((path, index) => {
       const fullPath = "/" + paths.slice(0, index + 1).join("/");
       return {
-        label: routeLabels[fullPath] || path.charAt(0).toUpperCase() + path.slice(1),
+        label: ROUTE_LABELS[fullPath] || path.charAt(0).toUpperCase() + path.slice(1),
         href: index < paths.length - 1 ? fullPath : undefined,
       };
     }),

@@ -29,10 +29,13 @@ import {
   mrrChartData,
   planDistribution,
   invoicesData,
-  kpiOverview,
+  INVOICE_STATUS_VARIANT,
+  PLANS,
+  INVOICE_STATUS_OPTIONS,
   type Invoice,
   type InvoiceStatus,
-} from "@/data/dashboard";
+} from "@/data/billing";
+import { kpiOverview } from "@/data/overview";
 
 const MrrChart = dynamic(
   () => import("@/components/charts/MrrChart").then((m) => m.MrrChart),
@@ -43,13 +46,6 @@ const PlanPieChart = dynamic(
   { ssr: false }
 );
 
-const invoiceStatusVariant: Record<InvoiceStatus, "success" | "warning" | "error"> = {
-  paid: "success",
-  pending: "warning",
-  overdue: "error",
-};
-
-const plans = ["Starter", "Pro", "Enterprise"];
 
 export default function BillingPage() {
   const [invoices, setInvoices] = useState<Invoice[]>(invoicesData);
@@ -60,11 +56,16 @@ export default function BillingPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    date: string;
+    amount: string;
+    plan: string;
+    status: InvoiceStatus;
+  }>({
     date: new Date().toISOString().split("T")[0],
     amount: "",
-    plan: "Pro",
-    status: "pending" as InvoiceStatus,
+    plan: PLANS[1],
+    status: "pending",
   });
 
   const filtered = useMemo(() => {
@@ -82,7 +83,7 @@ export default function BillingPage() {
     setFormData({
       date: new Date().toISOString().split("T")[0],
       amount: "",
-      plan: "Pro",
+      plan: PLANS[1] as typeof PLANS[number],
       status: "pending",
     });
     setIsAddModalOpen(true);
@@ -117,7 +118,7 @@ export default function BillingPage() {
         id: `INV-${String(invoices.length + 1).padStart(3, "0")}`,
         date: formData.date,
         amount: Number(formData.amount),
-        plan: formData.plan,
+        plan: formData.plan as typeof PLANS[number],
         status: formData.status,
       };
       setInvoices([...invoices, newInvoice].sort((a, b) => 
@@ -127,14 +128,14 @@ export default function BillingPage() {
     } else if (isEditModalOpen && selectedInvoice) {
       setInvoices(
         invoices.map((inv) =>
-          inv.id === selectedInvoice.id
-            ? {
-                ...inv,
-                date: formData.date,
-                amount: Number(formData.amount),
-                plan: formData.plan,
-                status: formData.status,
-              }
+            inv.id === selectedInvoice.id
+              ? {
+                  ...inv,
+                  date: formData.date,
+                  amount: Number(formData.amount),
+                  plan: formData.plan as typeof PLANS[number],
+                  status: formData.status,
+                }
             : inv
         )
       );
@@ -144,7 +145,7 @@ export default function BillingPage() {
     setFormData({
       date: new Date().toISOString().split("T")[0],
       amount: "",
-      plan: "Pro",
+      plan: PLANS[1] as typeof PLANS[number],
       status: "pending",
     });
   };
@@ -165,11 +166,6 @@ export default function BillingPage() {
     );
   };
 
-  const statusOptions = [
-    { label: "Paid", value: "paid" },
-    { label: "Pending", value: "pending" },
-    { label: "Overdue", value: "overdue" },
-  ];
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -215,7 +211,7 @@ export default function BillingPage() {
                 onChange={(value) =>
                   setStatusFilter((value || "") as InvoiceStatus | "")
                 }
-                options={statusOptions}
+                options={INVOICE_STATUS_OPTIONS}
                 placeholder="All statuses"
               />
             </FilterBar>
@@ -235,7 +231,7 @@ export default function BillingPage() {
               key: "status",
               label: "Status",
               render: (r) => (
-                <Badge variant={invoiceStatusVariant[r.status]}>
+                <Badge variant={INVOICE_STATUS_VARIANT[r.status]}>
                   {r.status}
                 </Badge>
               ),
@@ -342,7 +338,7 @@ export default function BillingPage() {
                 onChange={(e) => setFormData({ ...formData, plan: e.target.value })}
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
-                {plans.map((plan) => (
+                {PLANS.map((plan) => (
                   <option key={plan} value={plan}>
                     {plan}
                   </option>
@@ -431,7 +427,7 @@ export default function BillingPage() {
                 onChange={(e) => setFormData({ ...formData, plan: e.target.value })}
                 className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500/50 focus:outline-none"
               >
-                {plans.map((plan) => (
+                {PLANS.map((plan) => (
                   <option key={plan} value={plan}>
                     {plan}
                   </option>
@@ -510,7 +506,7 @@ export default function BillingPage() {
                 <div>
                   <p className="text-xs text-zinc-500">Status</p>
                   <div className="mt-1">
-                    <Badge variant={invoiceStatusVariant[selectedInvoice.status]}>
+                    <Badge variant={INVOICE_STATUS_VARIANT[selectedInvoice.status]}>
                       {selectedInvoice.status}
                     </Badge>
                   </div>
